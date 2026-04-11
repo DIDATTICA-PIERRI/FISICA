@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulatore di Campo Elettrico</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Georgia, serif; background: #f8f7f2; color: #222; line-height: 1.7; }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 40px 30px; }
+
+  h1 { font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 6px; color: #1a1a2e; }
+  .subtitle { text-align: center; font-style: italic; color: #555; margin-bottom: 36px; font-size: 15px; }
+
+  h2 { font-size: 19px; font-weight: bold; color: #1a1a2e; margin: 32px 0 10px; border-left: 4px solid #c0392b; padding-left: 10px; }
+  h3 { font-size: 16px; font-weight: bold; color: #333; margin: 20px 0 6px; }
+
+  p { margin-bottom: 12px; font-size: 15px; text-align: justify; }
+  ul { margin: 8px 0 14px 24px; font-size: 15px; }
+  ul li { margin-bottom: 5px; }
+
+  .formula-box {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    text-align: center;
+    font-size: 17px;
+  }
+  .formula-box .formula { font-family: 'Times New Roman', serif; font-size: 20px; color: #c0392b; font-weight: bold; }
+  .formula-box .desc { font-size: 13px; color: #666; margin-top: 6px; }
+
+  .note-box {
+    background: #eaf4fb;
+    border-left: 4px solid #2980b9;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: #1a4a6b;
+  }
+
+  .warning-box {
+    background: #fef9e7;
+    border-left: 4px solid #f39c12;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: #7d5a00;
+  }
+
+  hr { border: none; border-top: 1px solid #ddd; margin: 36px 0; }
+
+  /* ── SIMULATORE ── */
+  .sim-wrapper {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 24px 0;
+  }
+  .sim-title { font-size: 16px; font-weight: bold; color: #1a1a2e; margin-bottom: 14px; font-family: Arial, sans-serif; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 8px; margin-bottom: 12px; }
+  .card { background: #f5f5f5; border: 1px solid #ddd; border-radius: 8px; padding: 10px 12px; font-family: Arial, sans-serif; }
+  .card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .clabel { font-size: 13px; font-weight: bold; }
+  .row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; font-size: 12px; color: #555; }
+  .row input[type=number] { width: 56px; padding: 2px 5px; font-size: 12px; border: 1px solid #ccc; border-radius: 5px; }
+  .row input[type=range] { flex: 1; }
+  .qval { font-size: 12px; font-weight: bold; min-width: 26px; text-align: right; color: #222; }
+
+  .zoombar { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 12px; color: #555; font-family: Arial, sans-serif; }
+  .zoombar input[type=range] { flex: 1; }
+  .zbtn { width: 26px; height: 26px; border-radius: 6px; border: 1px solid #ccc; background: #fff; font-size: 16px; cursor: pointer; line-height: 1; }
+  .zspan { font-size: 12px; font-weight: bold; min-width: 40px; color: #222; }
+  .zreset { padding: 3px 10px; border-radius: 6px; border: 1px solid #ccc; background: #fff; color: #555; font-size: 11px; cursor: pointer; }
+
+  canvas { display: block; border: 1px solid #ccc; border-radius: 8px; cursor: grab; }
+  canvas:active { cursor: grabbing; }
+
+  .leg { display: flex; gap: 14px; margin-top: 8px; font-size: 12px; color: #666; flex-wrap: wrap; align-items: center; font-family: Arial, sans-serif; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+
+  .footer { text-align: center; font-size: 12px; color: #aaa; margin-top: 48px; padding-top: 16px; border-top: 1px solid #eee; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>Il Campo Elettrico</h1>
+  <p class="subtitle">Dispensa didattica con simulatore interattivo &mdash; Fisica II</p>
+
+  <h2>1. Introduzione</h2>
+  <p>
+    Il <strong>campo elettrico</strong> è una grandezza vettoriale definita in ogni punto dello spazio in presenza di cariche elettriche. Introdotto da Michael Faraday nel XIX secolo, il concetto di campo permette di descrivere le interazioni elettriche senza dover ricorrere all'azione a distanza istantanea.
+  </p>
+  <p>
+    Una carica elettrica <em>sorgente</em> modifica lo spazio circostante, creando un campo. Una seconda carica <em>di prova</em> immersa in quel campo subisce una forza proporzionale al campo stesso.
+  </p>
+
+  <h2>2. Definizione e Legge di Coulomb</h2>
+  <p>Il campo elettrico <strong>E</strong> generato da una carica puntiforme <em>Q</em> nel punto P distante <em>r</em> è:</p>
+
+  <div class="formula-box">
+    <div class="formula">E = k · Q / r²</div>
+    <div class="desc">
+      k = 8,99 × 10⁹ N·m²/C² (costante di Coulomb) &nbsp;|&nbsp;
+      r = distanza dalla carica &nbsp;|&nbsp;
+      Q = carica sorgente
+    </div>
+  </div>
+
+  <p>
+    Il campo è diretto <strong>radialmente verso l'esterno</strong> se Q &gt; 0 (carica positiva), e <strong>verso l'interno</strong> se Q &lt; 0 (carica negativa).
+    In presenza di più cariche, vale il <strong>principio di sovrapposizione</strong>: il campo totale è la somma vettoriale dei contributi di ciascuna carica.
+  </p>
+
+  <div class="formula-box">
+    <div class="formula">E<sub>tot</sub> = E<sub>1</sub> + E<sub>2</sub> + … + E<sub>n</sub></div>
+    <div class="desc">Somma vettoriale dei campi generati da ciascuna carica</div>
+  </div>
+
+  <h2>3. Linee di Campo Elettrico</h2>
+  <p>
+    Le <strong>linee di campo elettrico</strong> sono curve immaginarie tracciate nello spazio tali che il vettore <strong>E</strong> sia tangente in ogni punto. Forniscono una rappresentazione visiva intuitiva del campo.
+  </p>
+
+  <h3>Proprietà fondamentali</h3>
+  <ul>
+    <li>Le linee <strong>partono sempre</strong> dalle cariche positive (o dall'infinito).</li>
+    <li>Le linee <strong>arrivano sempre</strong> alle cariche negative (o all'infinito).</li>
+    <li>Non si incrociano mai (il campo ha un'unica direzione in ogni punto).</li>
+    <li>La <strong>densità</strong> delle linee indica l'intensità del campo: più sono fitte, più il campo è intenso.</li>
+    <li>Le frecce sulle linee indicano il <strong>verso</strong> del campo (da + verso −).</li>
+  </ul>
+
+  <div class="warning-box">
+    ⚠ <strong>Attenzione:</strong> da una carica negativa non possono mai partire linee di campo. Le linee entrano nelle cariche negative, non ne escono.
+  </div>
+
+  <h3>Configurazioni tipiche</h3>
+  <ul>
+    <li><strong>Carica isolata positiva:</strong> linee radiali uscenti in tutte le direzioni.</li>
+    <li><strong>Carica isolata negativa:</strong> linee radiali entranti da tutte le direzioni.</li>
+    <li><strong>Dipolo elettrico (+ e −):</strong> le linee partono dal + e arrivano al −, con caratteristica forma a "imbuto".</li>
+    <li><strong>Due cariche positive:</strong> le linee si respingono, con un punto di equilibrio a metà.</li>
+  </ul>
+
+  <h2>4. Simulatore Interattivo</h2>
+  <p>
+    Il simulatore seguente calcola e disegna le linee di campo elettrico per un sistema di fino a <strong>4 cariche puntiformi</strong> nel piano <em>xy</em>. Puoi modificare posizione e intensità di ciascuna carica in tempo reale.
+  </p>
+
+  <div class="note-box">
+    💡 <strong>Come usarlo:</strong> attiva le cariche con la casella "attiva", imposta le coordinate x e y, e regola il valore di q con il cursore (positivo = carica +, negativo = carica −). Usa lo zoom o la rotella del mouse per ingrandire. Trascina il piano per spostarti.
+  </div>
+
+  <!-- ═══════════════ SIMULATORE ═══════════════ -->
+  <div class="sim-wrapper">
+    <div class="sim-title">Simulatore — Linee di Campo Elettrico</div>
+    <div class="cards" id="cc"></div>
+    <div class="zoombar">
+      <label>Zoom</label>
+      <button class="zbtn" id="zminus">−</button>
+      <input type="range" id="zoom" min="0.5" max="5" step="0.1" value="1">
+      <button class="zbtn" id="zplus">+</button>
+      <span class="zspan" id="zval">1×</span>
+      <button class="zreset" id="zreset">reset vista</button>
+    </div>
+    <canvas id="cv"></canvas>
+    <div class="leg">
+      <span><span class="dot" style="background:#e05252"></span>Carica positiva (+)</span>
+      <span><span class="dot" style="background:#4a90d9"></span>Carica negativa (−)</span>
+      <span style="font-size:11px;color:#aaa">Trascina per spostarti · Rotella per zoom</span>
+    </div>
+  </div>
+  <!-- ════════════════════════════════════════ -->
+
+  <h2>5. Esercizi Proposti</h2>
+  <ul>
+    <li>Inserisci una sola carica positiva: osserva la simmetria radiale del campo.</li>
+    <li>Inserisci un dipolo (Q₁ = +1, Q₂ = −1): individua le linee che collegano le due cariche.</li>
+    <li>Prova due cariche positive uguali: dove si trova il punto di equilibrio? Cosa succede alle linee?</li>
+    <li>Inserisci tre cariche: due positive e una negativa. Quante linee arrivano alla negativa?</li>
+    <li>Aumenta il valore di q: come cambia la densità delle linee?</li>
+  </ul>
+
+  <h2>6. Note sul Metodo Numerico</h2>
+  <p>
+    Il simulatore integra numericamente le linee di campo usando il metodo di Eulero esplicito: a partire da un punto vicino a ciascuna carica positiva, il punto si sposta ad ogni passo nella direzione del vettore <strong>E</strong> normalizzato, con passo Δs costante. L'integrazione si arresta quando la linea raggiunge una carica negativa, esce dal dominio o il campo diventa troppo debole.
+  </p>
+  <p>
+    La sovrapposizione dei campi viene calcolata analiticamente in ogni punto sommando il contributo coulombiano di ciascuna carica attiva.
+  </p>
+
+  <div class="footer">
+    Dispensa generata con simulatore interattivo &mdash; Fisica del Campo Elettrico
+  </div>
+</div>
+
+<script>
+const CQ=[{x:2,y:0,q:1,on:true},{x:-2,y:0,q:-1,on:true},{x:0,y:0,q:1,on:false},{x:0,y:0,q:-1,on:false}];
+const PCOLORS=['#e05252','#3a8f3a','#c47a00','#7a4fc4'];
+const NCOLORS=['#4a90d9','#d4537e','#5daa9a','#888'];
+const NAMES=['Q₁','Q₂','Q₃','Q₄'];
+let zoom=1,panX=0,panY=0,dragging=false,lastMX=0,lastMY=0;
+let WXfn,WYfn;
+
+function buildUI(){
+  const cc=document.getElementById('cc');cc.innerHTML='';
+  CQ.forEach((c,i)=>{
+    const col=c.q>=0?PCOLORS[i]:NCOLORS[i];
+    const d=document.createElement('div');d.className='card';
+    d.innerHTML=`<div class="card-head">
+      <span class="clabel" id="lbl${i}" style="color:${col}">${NAMES[i]} (${c.q>0?'+':''}${c.q})</span>
+      <label style="font-size:12px;color:#666;cursor:pointer"><input type="checkbox" id="on${i}" ${c.on?'checked':''}> attiva</label>
+    </div>
+    <div class="row"><label>x</label><input type="number" id="cx${i}" value="${c.x}" step="1" min="-8" max="8"><label>y</label><input type="number" id="cy${i}" value="${c.y}" step="1" min="-8" max="8"></div>
+    <div class="row"><label>q</label><input type="range" id="cq${i}" min="-3" max="3" step="1" value="${c.q}"><span class="qval" id="qv${i}">${c.q>0?'+':''}${c.q}</span></div>`;
+    cc.appendChild(d);
+    document.getElementById(`on${i}`).onchange=e=>{CQ[i].on=e.target.checked;draw()};
+    document.getElementById(`cx${i}`).oninput=e=>{CQ[i].x=+e.target.value||0;draw()};
+    document.getElementById(`cy${i}`).oninput=e=>{CQ[i].y=+e.target.value||0;draw()};
+    document.getElementById(`cq${i}`).oninput=e=>{
+      CQ[i].q=+e.target.value;
+      document.getElementById(`qv${i}`).textContent=(CQ[i].q>0?'+':'')+CQ[i].q;
+      const nc=CQ[i].q>=0?PCOLORS[i]:NCOLORS[i];
+      document.getElementById(`lbl${i}`).style.color=nc;
+      document.getElementById(`lbl${i}`).textContent=`${NAMES[i]} (${CQ[i].q>0?'+':''}${CQ[i].q})`;
+      draw();
+    };
+  });
+}
+
+const zslider=document.getElementById('zoom');
+const zvalEl=document.getElementById('zval');
+zslider.oninput=e=>{zoom=+e.target.value;zvalEl.textContent=zoom.toFixed(1)+'×';draw()};
+document.getElementById('zminus').onclick=()=>{zoom=Math.max(0.5,+(zoom-0.2).toFixed(1));zslider.value=zoom;zvalEl.textContent=zoom.toFixed(1)+'×';draw()};
+document.getElementById('zplus').onclick=()=>{zoom=Math.min(5,+(zoom+0.2).toFixed(1));zslider.value=zoom;zvalEl.textContent=zoom.toFixed(1)+'×';draw()};
+document.getElementById('zreset').onclick=()=>{zoom=1;panX=0;panY=0;zslider.value=1;zvalEl.textContent='1×';draw()};
+
+const cv=document.getElementById('cv');
+cv.addEventListener('mousedown',e=>{dragging=true;lastMX=e.clientX;lastMY=e.clientY});
+window.addEventListener('mousemove',e=>{
+  if(!dragging)return;
+  const S=cv.width/(20/zoom);
+  panX+=(e.clientX-lastMX)/S;panY-=(e.clientY-lastMY)/S;
+  lastMX=e.clientX;lastMY=e.clientY;draw();
+});
+window.addEventListener('mouseup',()=>dragging=false);
+cv.addEventListener('touchstart',e=>{dragging=true;lastMX=e.touches[0].clientX;lastMY=e.touches[0].clientY},{passive:true});
+cv.addEventListener('touchmove',e=>{
+  if(!dragging)return;
+  const S=cv.width/(20/zoom);
+  panX+=(e.touches[0].clientX-lastMX)/S;panY-=(e.touches[0].clientY-lastMY)/S;
+  lastMX=e.touches[0].clientX;lastMY=e.touches[0].clientY;draw();
+},{passive:true});
+cv.addEventListener('touchend',()=>dragging=false);
+cv.addEventListener('wheel',e=>{
+  e.preventDefault();
+  zoom=Math.max(0.5,Math.min(5,zoom*(e.deltaY<0?1.1:0.9)));
+  zoom=Math.round(zoom*10)/10;
+  zslider.value=zoom;zvalEl.textContent=zoom.toFixed(1)+'×';draw();
+},{passive:false});
+
+function Efield(px,py){
+  let ex=0,ey=0;
+  CQ.forEach(c=>{
+    if(!c.on||c.q===0)return;
+    const dx=px-c.x,dy=py-c.y;
+    const r2=dx*dx+dy*dy;
+    if(r2<1e-4)return;
+    const f=c.q/(r2*Math.sqrt(r2));
+    ex+=f*dx;ey+=f*dy;
+  });
+  return[ex,ey];
+}
+
+function integrateLine(x0,y0,dir){
+  const pts=[[x0,y0]];
+  let x=x0,y=y0;
+  const DT=0.02,STEPS=3000;
+  for(let s=0;s<STEPS;s++){
+    const[ex,ey]=Efield(x,y);
+    const mag=Math.sqrt(ex*ex+ey*ey);
+    if(mag<1e-9)break;
+    x+=dir*(ex/mag)*DT;y+=dir*(ey/mag)*DT;
+    pts.push([x,y]);
+    if(Math.abs(x)>25||Math.abs(y)>25)break;
+    let stop=false;
+    CQ.forEach(ch=>{if(ch.on&&ch.q!==0&&(x-ch.x)**2+(y-ch.y)**2<0.018)stop=true;});
+    if(stop)break;
+  }
+  return pts;
+}
+
+function drawArrowAt(ctx,pts,idx,col){
+  if(idx<=0||idx>=pts.length)return;
+  const[x1,y1]=pts[idx-1],[x2,y2]=pts[idx];
+  const ax=WXfn(x2),ay=WYfn(y2),bx=WXfn(x1),by=WYfn(y1);
+  const dx=ax-bx,dy=ay-by,l=Math.sqrt(dx*dx+dy*dy);
+  if(l<0.5)return;
+  const nx=dx/l,ny=dy/l,as=6;
+  ctx.beginPath();
+  ctx.moveTo(ax-nx*as-ny*as*0.5,ay-ny*as+nx*as*0.5);
+  ctx.lineTo(ax,ay);
+  ctx.lineTo(ax-nx*as+ny*as*0.5,ay-ny*as-nx*as*0.5);
+  ctx.strokeStyle=col;ctx.lineWidth=1.4;ctx.stroke();
+}
+
+function renderLine(ctx,pts,col){
+  if(pts.length<2)return;
+  ctx.beginPath();ctx.moveTo(WXfn(pts[0][0]),WYfn(pts[0][1]));
+  for(let i=1;i<pts.length;i++)ctx.lineTo(WXfn(pts[i][0]),WYfn(pts[i][1]));
+  ctx.strokeStyle=col;ctx.lineWidth=1.4;ctx.stroke();
+  drawArrowAt(ctx,pts,Math.floor(pts.length/2),col);
+}
+
+function draw(){
+  const W=cv.width,H=cv.height;
+  const ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  const S=(W/20)*zoom;
+  WXfn=x=>W/2+(x+panX)*S;
+  WYfn=y=>H/2-(y+panY)*S;
+
+  ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);
+
+  const worldW=W/S;
+  let gs=1;
+  if(worldW>30)gs=5;else if(worldW>15)gs=2;else if(worldW<4)gs=0.5;
+  const x0w=-W/(2*S)-panX,x1w=W/(2*S)-panX;
+  const y0w=-H/(2*S)-panY,y1w=H/(2*S)-panY;
+  ctx.strokeStyle='rgba(0,0,0,0.07)';ctx.lineWidth=1;
+  for(let i=Math.floor(x0w/gs)*gs;i<=x1w+gs;i+=gs){ctx.beginPath();ctx.moveTo(WXfn(i),0);ctx.lineTo(WXfn(i),H);ctx.stroke();}
+  for(let i=Math.floor(y0w/gs)*gs;i<=y1w+gs;i+=gs){ctx.beginPath();ctx.moveTo(0,WYfn(i));ctx.lineTo(W,WYfn(i));ctx.stroke();}
+  ctx.strokeStyle='rgba(0,0,0,0.2)';ctx.lineWidth=1.2;
+  ctx.beginPath();ctx.moveTo(0,WYfn(0));ctx.lineTo(W,WYfn(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(WXfn(0),0);ctx.lineTo(WXfn(0),H);ctx.stroke();
+  ctx.fillStyle='rgba(0,0,0,0.3)';ctx.font='10px Arial,sans-serif';
+  for(let i=Math.floor(x0w/gs)*gs;i<=x1w+gs;i+=gs){if(Math.abs(i)<0.01)continue;ctx.textAlign='center';ctx.fillText(+i.toFixed(1),WXfn(i),WYfn(0)+12);}
+  for(let i=Math.floor(y0w/gs)*gs;i<=y1w+gs;i+=gs){if(Math.abs(i)<0.01)continue;ctx.textAlign='right';ctx.fillText(+i.toFixed(1),WXfn(0)-4,WYfn(i)+3);}
+
+  const active=CQ.filter(c=>c.on&&c.q!==0);
+  if(active.length===0){drawCharges(ctx);return;}
+  const posCharges=active.filter(c=>c.q>0);
+  const negCharges=active.filter(c=>c.q<0);
+  const NL=24;
+
+  if(posCharges.length>0){
+    posCharges.forEach(c=>{
+      const ci=CQ.indexOf(c);
+      const col=PCOLORS[ci];
+      const nLines=Math.round(NL*Math.abs(c.q));
+      for(let k=0;k<nLines;k++){
+        const angle=(2*Math.PI*k)/nLines;
+        const pts=integrateLine(c.x+0.18*Math.cos(angle),c.y+0.18*Math.sin(angle),1);
+        renderLine(ctx,pts,col);
+      }
+    });
+  } else {
+    negCharges.forEach(c=>{
+      const ci=CQ.indexOf(c);
+      const col=NCOLORS[ci];
+      const nLines=Math.round(NL*Math.abs(c.q));
+      for(let k=0;k<nLines;k++){
+        const angle=(2*Math.PI*k)/nLines;
+        const pts=integrateLine(c.x+0.18*Math.cos(angle),c.y+0.18*Math.sin(angle),-1);
+        renderLine(ctx,pts.slice().reverse(),col);
+      }
+    });
+  }
+  drawCharges(ctx);
+}
+
+function drawCharges(ctx){
+  CQ.forEach((c,i)=>{
+    if(!c.on)return;
+    const cx=WXfn(c.x),cy=WYfn(c.y);
+    ctx.beginPath();ctx.arc(cx,cy,9,0,2*Math.PI);
+    ctx.fillStyle=c.q>=0?PCOLORS[i]:NCOLORS[i];
+    ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#fff';ctx.font='bold 14px Arial,sans-serif';
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(c.q>=0?'+':'−',cx,cy+1);
+  });
+}
+
+function resize(){
+  const w=Math.min(cv.parentElement.clientWidth-40,820);
+  cv.width=w;cv.height=Math.round(w*0.58);draw();
+}
+buildUI();
+window.addEventListener('resize',resize);
+setTimeout(resize,50);
+</script>
+</body>
+</html>
