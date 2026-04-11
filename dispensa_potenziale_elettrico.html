@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Il Potenziale Elettrico — Dispensa Didattica</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Georgia,serif;background:#f8f7f2;color:#222;line-height:1.75}
+  .page{max-width:880px;margin:0 auto;padding:48px 32px}
+
+  h1{font-size:30px;font-weight:bold;text-align:center;color:#1a1a2e;margin-bottom:6px}
+  .subtitle{text-align:center;font-style:italic;color:#666;margin-bottom:40px;font-size:15px}
+  h2{font-size:20px;font-weight:bold;color:#1a1a2e;margin:36px 0 10px;border-left:4px solid #2980b9;padding-left:12px}
+  h3{font-size:16px;font-weight:bold;color:#333;margin:20px 0 6px}
+  p{margin-bottom:13px;font-size:15px;text-align:justify}
+  ul,ol{margin:8px 0 14px 26px;font-size:15px}
+  ul li,ol li{margin-bottom:6px}
+
+  .formula-box{background:#fff;border:1px solid #c8dff0;border-radius:8px;padding:18px 22px;margin:18px 0;text-align:center}
+  .formula{font-family:'Times New Roman',serif;font-size:22px;color:#1a5276;font-weight:bold}
+  .formula-desc{font-size:13px;color:#666;margin-top:8px;font-style:italic}
+
+  .note-box{background:#eaf4fb;border-left:4px solid #2980b9;border-radius:0 8px 8px 0;padding:13px 17px;margin:16px 0;font-size:14px;color:#1a4a6b}
+  .warning-box{background:#fef9e7;border-left:4px solid #f39c12;border-radius:0 8px 8px 0;padding:13px 17px;margin:16px 0;font-size:14px;color:#7d5a00}
+  .green-box{background:#eafaf1;border-left:4px solid #27ae60;border-radius:0 8px 8px 0;padding:13px 17px;margin:16px 0;font-size:14px;color:#1a5e34}
+
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th{background:#2980b9;color:#fff;padding:8px 12px;text-align:left;font-weight:normal}
+  td{padding:8px 12px;border-bottom:1px solid #ddd}
+  tr:nth-child(even) td{background:#f0f7ff}
+
+  hr{border:none;border-top:1px solid #ddd;margin:40px 0}
+
+  /* ── SIMULATORE ── */
+  .sim-wrapper{background:#fff;border:1px solid #c8dff0;border-radius:10px;padding:22px;margin:28px 0}
+  .sim-title{font-size:16px;font-weight:bold;color:#1a1a2e;margin-bottom:14px;font-family:Arial,sans-serif}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:7px;margin-bottom:10px}
+  .card{background:#f5f5f5;border:1px solid #ddd;border-radius:7px;padding:9px 11px;font-family:Arial,sans-serif}
+  .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+  .clabel{font-size:12px;font-weight:bold}
+  .row{display:flex;align-items:center;gap:5px;margin-bottom:4px;font-size:11px;color:#555}
+  .row input[type=number]{width:54px;padding:2px 4px;font-size:11px;border:1px solid #ccc;border-radius:4px}
+  .row input[type=range]{flex:1}
+  .qval{font-size:11px;font-weight:bold;min-width:24px;text-align:right}
+  .toolbar{display:flex;align-items:center;gap:12px;margin-bottom:10px;font-size:12px;color:#555;flex-wrap:wrap;font-family:Arial,sans-serif}
+  .toolbar input[type=range]{width:100px}
+  .zbtn{width:26px;height:26px;border-radius:6px;border:1px solid #ccc;background:#fff;font-size:15px;cursor:pointer}
+  .zreset{padding:3px 10px;border-radius:6px;border:1px solid #ccc;background:#fff;color:#666;font-size:11px;cursor:pointer}
+  canvas{display:block;border:1px solid #ccc;border-radius:8px;cursor:grab}
+  canvas:active{cursor:grabbing}
+  .leg{display:flex;gap:14px;margin-top:8px;font-size:11px;color:#666;flex-wrap:wrap;align-items:center;font-family:Arial,sans-serif}
+
+  .footer{text-align:center;font-size:12px;color:#aaa;margin-top:52px;padding-top:18px;border-top:1px solid #eee}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>Il Potenziale Elettrico</h1>
+  <p class="subtitle">Dispensa didattica con simulatore interattivo &mdash; Fisica II</p>
+
+  <!-- ══════════════════════════════════════════ -->
+  <h2>1. Introduzione: dal campo al potenziale</h2>
+
+  <p>
+    Nella descrizione delle interazioni elettriche, il <strong>campo elettrico</strong> <strong>E</strong> fornisce l'informazione vettoriale completa: in ogni punto dello spazio indica intensità e direzione della forza che agirebbe su una carica di prova unitaria. Tuttavia, per molte applicazioni pratiche è conveniente introdurre una grandezza <em>scalare</em> associata al campo: il <strong>potenziale elettrico</strong> <em>V</em>.
+  </p>
+  <p>
+    Il potenziale elettrico è strettamente legato al concetto di <strong>energia potenziale</strong>: così come in meccanica si definisce l'energia potenziale gravitazionale di una massa in un campo gravitazionale, in elettrostatica si definisce l'energia potenziale di una carica in un campo elettrico. Il potenziale è semplicemente l'energia potenziale per unità di carica.
+  </p>
+
+  <div class="formula-box">
+    <div class="formula">V = U / q₀</div>
+    <div class="formula-desc">V = potenziale elettrico &nbsp;|&nbsp; U = energia potenziale &nbsp;|&nbsp; q₀ = carica di prova</div>
+  </div>
+
+  <p>
+    L'unità di misura del potenziale nel Sistema Internazionale è il <strong>Volt</strong> (V), equivalente a J/C (joule per coulomb). Il potenziale è una grandezza scalare: in ogni punto dello spazio è un semplice numero, non un vettore.
+  </p>
+
+  <!-- ══════════════════════════════════════════ -->
+  <h2>2. Potenziale generato da una carica puntiforme</h2>
+
+  <p>
+    Una carica puntiforme <em>Q</em> posta nell'origine genera intorno a sé un campo elettrico radiale. Il potenziale elettrico a distanza <em>r</em> da tale carica vale:
+  </p>
+
+  <div class="formula-box">
+    <div class="formula">V(r) = k · Q / r</div>
+    <div class="formula-desc">
+      k = 8,99 × 10⁹ N·m²/C² &nbsp;|&nbsp; Q = carica sorgente &nbsp;|&nbsp; r = distanza dalla carica
+    </div>
+  </div>
+
+  <p>
+    Si osserva che:
+  </p>
+  <ul>
+    <li>Se <em>Q &gt; 0</em>, il potenziale è <strong>positivo</strong> e decresce allontanandosi dalla carica.</li>
+    <li>Se <em>Q &lt; 0</em>, il potenziale è <strong>negativo</strong> e il suo valore assoluto decresce allontanandosi.</li>
+    <li>Per <em>r → ∞</em>, il potenziale tende a zero: convenzionalmente si sceglie il punto a infinito come riferimento (V = 0).</li>
+    <li>Per <em>r → 0</em>, il potenziale diverge (→ ±∞): la carica puntiforme è una singolarità matematica.</li>
+  </ul>
+
+  <div class="note-box">
+    💡 <strong>Analogia gravitazionale:</strong> il potenziale elettrico di una carica positiva è analogo al potenziale gravitazionale di una massa: entrambi decadono come 1/r e la forza è proporzionale al gradiente negativo del potenziale.
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <h2>3. Principio di sovrapposizione</h2>
+
+  <p>
+    In presenza di più cariche puntiformi, il potenziale totale in un punto P è la <strong>somma algebrica</strong> (scalare) dei potenziali generati da ciascuna carica:
+  </p>
+
+  <div class="formula-box">
+    <div class="formula">V<sub>tot</sub> = k · Σ Qᵢ / rᵢ</div>
+    <div class="formula-desc">rᵢ = distanza della carica i-esima dal punto P</div>
+  </div>
+
+  <p>
+    La natura scalare del potenziale rende questa somma molto più semplice da calcolare rispetto alla sovrapposizione vettoriale del campo elettrico. È sufficiente sommare numeri con segno, senza dover comporre vettori.
+  </p>
+
+  <div class="green-box">
+    ✔ <strong>Vantaggio pratico:</strong> calcolare prima il potenziale scalare e poi ricavare il campo elettrico come suo gradiente negativo è spesso più comodo che calcolare direttamente il campo vettoriale.
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <h2>4. Relazione tra campo elettrico e potenziale</h2>
+
+  <p>
+    Il campo elettrico e il potenziale sono strettamente connessi. Il campo elettrico è il <strong>gradiente negativo</strong> del potenziale:
+  </p>
+
+  <div class="formula-box">
+    <div class="formula">E = −∇V</div>
+    <div class="formula-desc">
+      In coordinate cartesiane: &nbsp; Eₓ = −∂V/∂x &nbsp;|&nbsp; E_y = −∂V/∂y &nbsp;|&nbsp; E_z = −∂V/∂z
+    </div>
+  </div>
+
+  <p>
+    Questa relazione ha un significato fisico profondo: il campo elettrico punta sempre nella direzione di <em>massima diminuzione</em> del potenziale, con intensità pari alla rapidità di tale variazione. Una carica positiva libera tende spontaneamente a muoversi da zone ad alto potenziale verso zone a basso potenziale.
+  </p>
+
+  <h3>Lavoro del campo elettrico</h3>
+  <p>
+    Il lavoro compiuto dal campo elettrico per spostare una carica <em>q</em> dal punto A al punto B dipende solo dai valori del potenziale nei due punti estremi, indipendentemente dal percorso seguito:
+  </p>
+
+  <div class="formula-box">
+    <div class="formula">W<sub>A→B</sub> = q · (V<sub>A</sub> − V<sub>B</sub>)</div>
+    <div class="formula-desc">Il campo elettrostatico è conservativo: il lavoro non dipende dal percorso</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <h2>5. Superfici e linee equipotenziali</h2>
+
+  <p>
+    Una <strong>superficie equipotenziale</strong> è il luogo geometrico dei punti in cui il potenziale elettrico ha lo stesso valore. Nel piano, queste superfici si riducono a <strong>linee equipotenziali</strong>. Esse hanno proprietà geometriche fondamentali:
+  </p>
+
+  <ul>
+    <li>Le linee equipotenziali sono <strong>sempre perpendicolari</strong> alle linee di campo in ogni punto.</li>
+    <li>Il campo elettrico è tanto più intenso quanto più le linee equipotenziali sono <strong>ravvicinate</strong> (gradiente elevato).</li>
+    <li>Spostarsi <em>lungo</em> una linea equipotenziale non richiede lavoro da parte del campo elettrico.</li>
+    <li>Intorno a una carica positiva isolata, le equipotenziali sono <strong>circonferenze concentriche</strong> (in 3D: sfere).</li>
+    <li>Nel caso di sistemi di cariche, le equipotenziali assumono forme complesse che riflettono la geometria della distribuzione.</li>
+  </ul>
+
+  <div class="warning-box">
+    ⚠ <strong>Attenzione:</strong> le linee equipotenziali non hanno un verso (il potenziale è uno scalare), a differenza delle linee di campo che hanno una freccia direzionale.
+  </div>
+
+  <h3>Configurazioni tipiche</h3>
+
+  <table>
+    <tr><th>Configurazione</th><th>Forma delle equipotenziali</th><th>Andamento di V</th></tr>
+    <tr><td>Carica puntiforme isolata</td><td>Cerchi concentrici</td><td>V = kQ/r (decadimento radiale)</td></tr>
+    <tr><td>Dipolo (+ e −)</td><td>Curve chiuse complesse</td><td>Positivo vicino al +, negativo vicino al −</td></tr>
+    <tr><td>Due cariche uguali</td><td>Curve simmetriche, piano mediano V=0</td><td>Simmetria assiale</td></tr>
+    <tr><td>Condensatore piano</td><td>Piani paralleli alle armature</td><td>Variazione lineare tra le armature</td></tr>
+  </table>
+
+  <!-- ══════════════════════════════════════════ -->
+  <h2>6. Simulatore Interattivo — Linee Equipotenziali</h2>
+
+  <p>
+    Il simulatore seguente calcola e visualizza le linee equipotenziali generate da un sistema di fino a <strong>4 cariche puntiformi</strong> nel piano <em>xy</em>. Il colore di sfondo rappresenta la mappa del potenziale (blu = V basso, rosso = V alto), mentre le linee scure sono le curve a potenziale costante.
+  </p>
+
+  <div class="note-box">
+    💡 <strong>Come usarlo:</strong> attiva le cariche, imposta coordinate e valore di q. Il cursore <em>Linee</em> regola il numero di equipotenziali visualizzate. Usa lo zoom o la rotella del mouse per ingrandire; trascina per spostarti. Osserva come le linee si infittiscono vicino alle cariche, dove il campo è più intenso.
+  </div>
+
+  <!-- ══════════ SIMULATORE ══════════ -->
+  <div class="sim-wrapper">
+    <div class="sim-title">Simulatore — Linee Equipotenziali</div>
+    <div class="cards" id="cc"></div>
+    <div class="toolbar">
+      <label>Zoom</label>
+      <button class="zbtn" id="zm">−</button>
+      <input type="range" id="zoom" min="0.5" max="5" step="0.1" value="1">
+      <button class="zbtn" id="zp">+</button>
+      <span id="zv" style="font-size:12px;font-weight:bold;min-width:36px">1×</span>
+      <button class="zreset" id="zr">reset vista</button>
+      <label style="margin-left:8px">Linee</label>
+      <input type="range" id="nlines" min="10" max="60" step="5" value="35">
+      <span id="nlv" style="font-size:12px;font-weight:bold;min-width:28px">35</span>
+    </div>
+    <canvas id="cv"></canvas>
+    <div class="leg">
+      <span style="display:flex;align-items:center;gap:5px">
+        <span style="width:32px;height:4px;background:linear-gradient(to right,#2166ac,#74add1,#f7f7f7,#f4a582,#d6604d);display:inline-block;border-radius:2px"></span>
+        V: basso (blu) → alto (rosso)
+      </span>
+      <span style="font-size:10px;color:#aaa">Trascina per spostarti · Rotella del mouse = zoom</span>
+    </div>
+  </div>
+  <!-- ═══════════════════════════════ -->
+
+  <!-- ══════════════════════════════════════════ -->
+  <h2>7. Esercizi Proposti</h2>
+  <ol>
+    <li>Attiva una sola carica positiva (Q₁ = +1): osserva che le equipotenziali sono cerchi concentrici. Avvicinandosi alla carica, le linee si infittiscono: cosa significa fisicamente?</li>
+    <li>Inserisci un dipolo (Q₁ = +1, Q₂ = −1): individua la linea equipotenziale con V = 0. Dove si trova geometricamente?</li>
+    <li>Prova due cariche positive uguali (Q₁ = Q₂ = +1): dove si trova il punto di sella del potenziale? Come appare la linea V = costante che passa per quel punto?</li>
+    <li>Inserisci una carica positiva e una negativa con intensità diverse (es. Q₁ = +2, Q₂ = −1): le equipotenziali sono ancora simmetriche? Perché?</li>
+    <li>Con il cursore "Linee" aumenta il numero di equipotenziali: in quale zona del piano la densità è maggiore? Che cosa indica sulla intensità del campo elettrico?</li>
+  </ol>
+
+  <!-- ══════════════════════════════════════════ -->
+  <h2>8. Note sul Metodo Numerico</h2>
+  <p>
+    Il simulatore calcola il potenziale <em>V(x,y)</em> analiticamente in ogni punto della griglia, sommando i contributi coulombiani di ciascuna carica attiva. Per evitare la divergenza matematica in prossimità delle cariche, il potenziale viene limitato (clamped) a un valore massimo. Le linee equipotenziali vengono estratte con l'algoritmo <strong>Marching Squares</strong>: per ogni cella della griglia si individua se e dove la curva di livello interseca i bordi della cella, e si traccia il segmento corrispondente. Il risultato è una buona approssimazione delle curve isoV per qualsiasi configurazione di cariche.
+  </p>
+
+  <div class="footer">
+    Dispensa didattica — Il Potenziale Elettrico &mdash; Fisica II
+  </div>
+</div>
+
+<!-- ═══════════════ SCRIPT SIMULATORE ═══════════════ -->
+<script>
+const CQ=[{x:2,y:0,q:1,on:true},{x:-2,y:0,q:-1,on:true},{x:0,y:0,q:1,on:false},{x:0,y:0,q:-1,on:false}];
+const PC=['#e05252','#3a8f3a','#c47a00','#7a4fc4'],NC=['#4a90d9','#d4537e','#5daa9a','#888'],NM=['Q₁','Q₂','Q₃','Q₄'];
+let zoom=1,panX=0,panY=0,drag=false,lx=0,ly=0;
+let WXf,WYf,S,W,H,NL=35;
+
+function buildUI(){
+  const cc=document.getElementById('cc');cc.innerHTML='';
+  CQ.forEach((c,i)=>{
+    const col=c.q>=0?PC[i]:NC[i],d=document.createElement('div');d.className='card';
+    d.innerHTML=`<div class="card-head"><span class="clabel" id="lb${i}" style="color:${col}">${NM[i]} (${c.q>0?'+':''}${c.q})</span><label style="font-size:11px;color:#666;cursor:pointer"><input type="checkbox" id="on${i}" ${c.on?'checked':''}> attiva</label></div><div class="row"><label>x</label><input type="number" id="cx${i}" value="${c.x}" step="1" min="-8" max="8"><label>y</label><input type="number" id="cy${i}" value="${c.y}" step="1" min="-8" max="8"></div><div class="row"><label>q</label><input type="range" id="cq${i}" min="-3" max="3" step="1" value="${c.q}"><span class="qval" id="qv${i}">${c.q>0?'+':''}${c.q}</span></div>`;
+    cc.appendChild(d);
+    document.getElementById('on'+i).onchange=e=>{CQ[i].on=e.target.checked;draw()};
+    document.getElementById('cx'+i).oninput=e=>{CQ[i].x=+e.target.value||0;draw()};
+    document.getElementById('cy'+i).oninput=e=>{CQ[i].y=+e.target.value||0;draw()};
+    document.getElementById('cq'+i).oninput=e=>{
+      CQ[i].q=+e.target.value;
+      document.getElementById('qv'+i).textContent=(CQ[i].q>0?'+':'')+CQ[i].q;
+      const nc=CQ[i].q>=0?PC[i]:NC[i];
+      document.getElementById('lb'+i).style.color=nc;
+      document.getElementById('lb'+i).textContent=NM[i]+' ('+(CQ[i].q>0?'+':'')+CQ[i].q+')';
+      draw();
+    };
+  });
+}
+
+const zs=document.getElementById('zoom'),zv=document.getElementById('zv');
+zs.oninput=e=>{zoom=+e.target.value;zv.textContent=zoom.toFixed(1)+'×';draw()};
+document.getElementById('zm').onclick=()=>{zoom=Math.max(0.5,+(zoom-0.2).toFixed(1));zs.value=zoom;zv.textContent=zoom.toFixed(1)+'×';draw()};
+document.getElementById('zp').onclick=()=>{zoom=Math.min(5,+(zoom+0.2).toFixed(1));zs.value=zoom;zv.textContent=zoom.toFixed(1)+'×';draw()};
+document.getElementById('zr').onclick=()=>{zoom=1;panX=0;panY=0;zs.value=1;zv.textContent='1×';draw()};
+document.getElementById('nlines').oninput=e=>{NL=+e.target.value;document.getElementById('nlv').textContent=NL;draw()};
+
+const cv=document.getElementById('cv');
+cv.addEventListener('mousedown',e=>{drag=true;lx=e.clientX;ly=e.clientY});
+window.addEventListener('mousemove',e=>{if(!drag)return;panX+=(e.clientX-lx)/S;panY-=(e.clientY-ly)/S;lx=e.clientX;ly=e.clientY;draw()});
+window.addEventListener('mouseup',()=>drag=false);
+cv.addEventListener('touchstart',e=>{drag=true;lx=e.touches[0].clientX;ly=e.touches[0].clientY},{passive:true});
+cv.addEventListener('touchmove',e=>{if(!drag)return;panX+=(e.touches[0].clientX-lx)/S;panY-=(e.touches[0].clientY-ly)/S;lx=e.touches[0].clientX;ly=e.touches[0].clientY;draw()},{passive:true});
+cv.addEventListener('touchend',()=>drag=false);
+cv.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(0.5,Math.min(5,zoom*(e.deltaY<0?1.1:0.9)));zoom=Math.round(zoom*10)/10;zs.value=zoom;zv.textContent=zoom.toFixed(1)+'×';draw()},{passive:false});
+
+function Vpot(px,py){
+  let v=0;
+  CQ.forEach(c=>{if(!c.on||c.q===0)return;const r=Math.sqrt((px-c.x)**2+(py-c.y)**2);if(r<0.05)return;v+=c.q/r});
+  return v;
+}
+
+function potColor(t){
+  const stops=[[0,33,102,172],[0.25,103,169,207],[0.5,247,247,247],[0.75,214,96,77],[1,178,24,43]];
+  let i=0;for(let k=0;k<stops.length-1;k++){if(t>=stops[k][0])i=k;}
+  const a=stops[i],b=stops[i+1],f=(t-a[0])/(b[0]-a[0]);
+  return[Math.round(a[1]+(b[1]-a[1])*f),Math.round(a[2]+(b[2]-a[2])*f),Math.round(a[3]+(b[3]-a[3])*f)];
+}
+
+function isoSegments(cx,cy,gs,v00,v10,v11,v01,lv){
+  function interp(va,vb,xa,ya,xb,yb){const t=(lv-va)/(vb-va);return[xa+t*(xb-xa),ya+t*(yb-ya)];}
+  const ab=[v00>lv,v10>lv,v11>lv,v01>lv];
+  const edges=[];
+  if(ab[0]!==ab[1])edges.push(interp(v00,v10,cx,cy,cx+gs,cy));
+  if(ab[1]!==ab[2])edges.push(interp(v10,v11,cx+gs,cy,cx+gs,cy+gs));
+  if(ab[2]!==ab[3])edges.push(interp(v11,v01,cx+gs,cy+gs,cx,cy+gs));
+  if(ab[3]!==ab[0])edges.push(interp(v01,v00,cx,cy+gs,cx,cy));
+  if(edges.length===2)return[[edges[0][0],edges[0][1],edges[1][0],edges[1][1]]];
+  if(edges.length===4)return[[edges[0][0],edges[0][1],edges[1][0],edges[1][1]],[edges[2][0],edges[2][1],edges[3][0],edges[3][1]]];
+  return[];
+}
+
+function draw(){
+  W=cv.width;H=cv.height;S=(W/20)*zoom;
+  WXf=x=>W/2+(x+panX)*S;WYf=y=>H/2-(y+panY)*S;
+  const ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const act=CQ.filter(c=>c.on&&c.q!==0);
+  if(act.length>0){
+    const RES=3,cols=Math.ceil(W/RES),rows=Math.ceil(H/RES);
+    const vals=new Float32Array((cols+1)*(rows+1));
+    const VCLAMP=10;let vmin=Infinity,vmax=-Infinity;
+    for(let r=0;r<=rows;r++){for(let c=0;c<=cols;c++){
+      const px=c*RES,py=r*RES,wx=(px-W/2)/S-panX,wy=(H/2-py)/S-panY;
+      let v=Vpot(wx,wy);v=Math.max(-VCLAMP,Math.min(VCLAMP,v));
+      vals[r*(cols+1)+c]=v;if(v<vmin)vmin=v;if(v>vmax)vmax=v;
+    }}
+    const vrange=vmax-vmin||1;
+    const img=ctx.createImageData(cols*RES,rows*RES);
+    for(let r=0;r<rows;r++){for(let c=0;c<cols;c++){
+      const t=(vals[r*(cols+1)+c]-vmin)/vrange;
+      const[rr,gg,bb]=potColor(t);
+      for(let dy=0;dy<RES;dy++){for(let dx=0;dx<RES;dx++){
+        const idx=4*((r*RES+dy)*cols*RES+(c*RES+dx));
+        img.data[idx]=rr;img.data[idx+1]=gg;img.data[idx+2]=bb;img.data[idx+3]=200;
+      }}
+    }}
+    ctx.putImageData(img,0,0);
+    const GS=2,gc=Math.ceil(W/GS)+1,gr=Math.ceil(H/GS)+1;
+    const gv=new Float32Array(gc*gr);
+    for(let r=0;r<gr;r++){for(let c=0;c<gc;c++){
+      const px=c*GS,py=r*GS,wx=(px-W/2)/S-panX,wy=(H/2-py)/S-panY;
+      let v=Vpot(wx,wy);v=Math.max(-VCLAMP,Math.min(VCLAMP,v));gv[r*gc+c]=v;
+    }}
+    const levels=[];for(let i=1;i<NL;i++)levels.push(vmin+i*(vrange/NL));
+    levels.forEach(level=>{
+      const t=(level-vmin)/vrange;
+      const[rr,gg,bb]=potColor(t);
+      const dk=0.35+0.25*Math.abs(t-0.5)*2;
+      ctx.strokeStyle=`rgb(${Math.round(rr*dk)},${Math.round(gg*dk)},${Math.round(bb*dk)})`;
+      ctx.lineWidth=t<0.15||t>0.85?1.6:t<0.25||t>0.75?1.3:1.0;
+      ctx.beginPath();
+      for(let r=0;r<gr-1;r++){for(let c=0;c<gc-1;c++){
+        const v00=gv[r*gc+c],v10=gv[r*gc+c+1],v01=gv[(r+1)*gc+c],v11=gv[(r+1)*gc+c+1];
+        isoSegments(c*GS,r*GS,GS,v00,v10,v11,v01,level).forEach(([x1,y1,x2,y2])=>{ctx.moveTo(x1,y1);ctx.lineTo(x2,y2)});
+      }}
+      ctx.stroke();
+      if(Math.round(t*NL)%5===2){
+        const lbl=(level>=0?'+':'')+level.toFixed(1);
+        const dr=Math.round(rr*dk),dg=Math.round(gg*dk),db=Math.round(bb*dk);
+        for(let r=3;r<gr-3;r+=6){
+          const v0=gv[r*gc+3],v1=gv[(r+1)*gc+3];
+          if((v0-level)*(v1-level)<0){
+            const f=(level-v0)/(v1-v0),py=r*GS+f*GS;
+            ctx.fillStyle=`rgb(${dr},${dg},${db})`;ctx.font='bold 9px Arial';ctx.textAlign='left';ctx.textBaseline='middle';
+            ctx.fillText(lbl,6,py);break;
+          }
+        }
+      }
+    });
+  }
+  const wW=W/S;let gs=1;if(wW>30)gs=5;else if(wW>15)gs=2;else if(wW<4)gs=0.5;
+  const x0=-W/(2*S)-panX,x1=W/(2*S)-panX,y0b=-H/(2*S)-panY,y1b=H/(2*S)-panY;
+  ctx.strokeStyle='rgba(0,0,0,0.1)';ctx.lineWidth=0.5;
+  for(let i=Math.floor(x0/gs)*gs;i<=x1+gs;i+=gs){ctx.beginPath();ctx.moveTo(WXf(i),0);ctx.lineTo(WXf(i),H);ctx.stroke()}
+  for(let i=Math.floor(y0b/gs)*gs;i<=y1b+gs;i+=gs){ctx.beginPath();ctx.moveTo(0,WYf(i));ctx.lineTo(W,WYf(i));ctx.stroke()}
+  ctx.strokeStyle='rgba(0,0,0,0.25)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(0,WYf(0));ctx.lineTo(W,WYf(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(WXf(0),0);ctx.lineTo(WXf(0),H);ctx.stroke();
+  ctx.fillStyle='rgba(0,0,0,0.35)';ctx.font='9px Arial';
+  for(let i=Math.floor(x0/gs)*gs;i<=x1+gs;i+=gs){if(Math.abs(i)<0.01)continue;ctx.textAlign='center';ctx.fillText(+i.toFixed(1),WXf(i),WYf(0)+11)}
+  for(let i=Math.floor(y0b/gs)*gs;i<=y1b+gs;i+=gs){if(Math.abs(i)<0.01)continue;ctx.textAlign='right';ctx.fillText(+i.toFixed(1),WXf(0)-3,WYf(i)+3)}
+  CQ.forEach((c,i)=>{
+    if(!c.on)return;
+    const cx=WXf(c.x),cy=WYf(c.y);
+    ctx.beginPath();ctx.arc(cx,cy,9,0,2*Math.PI);ctx.fillStyle=c.q>=0?PC[i]:NC[i];ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#fff';ctx.font='bold 13px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(c.q>=0?'+':'−',cx,cy+1);
+  });
+}
+
+function resize(){const w=Math.min(document.querySelector('.sim-wrapper').clientWidth-44,820);cv.width=w;cv.height=Math.round(w*0.58);draw()}
+buildUI();window.addEventListener('resize',resize);setTimeout(resize,60);
+</script>
+</body>
+</html>
