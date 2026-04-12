@@ -17,17 +17,17 @@ body{font-family:'Source Sans 3',sans-serif;background:#faf9f6;color:#1a1a1e;min
 .hero p{font-size:16px;color:rgba(255,255,255,0.45);font-weight:300;max-width:500px;margin:0 auto 36px}
 .rule{width:50px;height:2px;background:#b5351a;margin:0 auto}
 
-.container{max-width:860px;margin:0 auto;padding:60px 32px}
+.container{max-width:900px;margin:0 auto;padding:60px 32px}
 @media(max-width:600px){.container{padding:40px 16px}}
 
-.section-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:28px;display:flex;align-items:center;gap:12px}
+.section-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:24px;display:flex;align-items:center;gap:12px}
 .section-label::after{content:'';flex:1;height:1px;background:#dddbd5}
-.label-fisica{color:#b5351a}
-.label-mat{color:#1a6b3a}
+.lf{color:#b5351a}
+.lm{color:#1a6b3a}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-bottom:56px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-bottom:52px}
 
-.card{background:#fff;border:1px solid #dddbd5;border-radius:6px;padding:26px 26px 58px;text-decoration:none;color:inherit;display:block;transition:transform 0.18s,box-shadow 0.18s;position:relative;overflow:hidden}
+.card{background:#fff;border:1px solid #dddbd5;border-radius:6px;padding:26px 26px 60px;text-decoration:none;color:inherit;display:block;transition:transform 0.18s,box-shadow 0.18s;position:relative;overflow:hidden}
 .card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;transition:width 0.18s}
 .card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,0.1)}
 .card:hover::before{width:5px}
@@ -39,10 +39,11 @@ body{font-family:'Source Sans 3',sans-serif;background:#faf9f6;color:#1a1a1e;min
 .card.teal::before{background:#0e6b6b}.card.teal:hover .card-arrow{color:#0e6b6b}
 .card.amber::before{background:#8c5e1a}.card.amber:hover .card-arrow{color:#8c5e1a}
 .card.rose::before{background:#8c1a4b}.card.rose:hover .card-arrow{color:#8c1a4b}
+.card.indigo::before{background:#2d1a8c}.card.indigo:hover .card-arrow{color:#2d1a8c}
 
 .card-num{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#bbb;margin-bottom:10px}
 .card h2{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;margin-bottom:8px;color:#1a1a1e;line-height:1.25}
-.card p{font-size:13px;color:#6b6860;line-height:1.6;margin-bottom:0;font-weight:300}
+.card p{font-size:13px;color:#6b6860;line-height:1.6;font-weight:300}
 
 .card-tags{display:flex;gap:5px;flex-wrap:wrap;position:absolute;bottom:18px;left:26px;right:44px}
 .tag{font-size:10px;padding:2px 7px;border-radius:2px;letter-spacing:0.5px;text-transform:uppercase;font-weight:600}
@@ -53,13 +54,14 @@ body{font-family:'Source Sans 3',sans-serif;background:#faf9f6;color:#1a1a1e;min
 .tag-teal{background:#e0f5f5;color:#0e6b6b}
 .tag-amber{background:#faf0e0;color:#8c5e1a}
 .tag-rose{background:#fae8f0;color:#8c1a4b}
+.tag-indigo{background:#eae8fa;color:#2d1a8c}
 .tag-gray{background:#f0ede6;color:#6b6860}
 
 .card-arrow{position:absolute;bottom:20px;right:22px;font-size:20px;color:#dddbd5;transition:color 0.18s,transform 0.18s}
 .card:hover .card-arrow{transform:translateX(3px)}
 
-.card.soon{opacity:0.55;cursor:default;pointer-events:none}
-.card.soon::after{content:'prossimamente';position:absolute;top:14px;right:14px;font-size:9px;letter-spacing:1px;text-transform:uppercase;background:#f0ede6;color:#aaa;padding:2px 7px;border-radius:2px;font-weight:600}
+.card.soon{opacity:0.52;pointer-events:none}
+.card.soon::after{content:'prossimamente';position:absolute;top:14px;right:14px;font-size:9px;letter-spacing:1px;text-transform:uppercase;background:#f0ede6;color:#aaa;padding:2px 8px;border-radius:2px;font-weight:600}
 
 footer{text-align:center;font-size:11px;color:#aaa;padding:32px;border-top:1px solid #dddbd5;letter-spacing:1px;text-transform:uppercase}
 </style>
@@ -76,7 +78,7 @@ footer{text-align:center;font-size:11px;color:#aaa;padding:32px;border-top:1px s
 <div class="container">
 
   <!-- FISICA -->
-  <div class="section-label label-fisica">⚡ Fisica II — Elettrostatica</div>
+  <div class="section-label lf">⚡ Fisica II — Elettrostatica</div>
   <div class="grid">
 
     <a class="card blue" href="simulatore_campo_elettrico.html">
@@ -115,49 +117,60 @@ footer{text-align:center;font-size:11px;color:#aaa;padding:32px;border-top:1px s
   </div>
 
   <!-- MATEMATICA -->
-  <div class="section-label label-mat">∫ Matematica</div>
+  <div class="section-label lm">∫ Matematica</div>
   <div class="grid">
 
-    <a class="card green" href="matematica/analisi.html">
+    <a class="card green" href="matematica/probabilita.html">
       <div class="card-num">Mat 01</div>
-      <h2>Analisi</h2>
-      <p>Derivate, integrali e serie con grafici interattivi: retta tangente, area sotto la curva, convergenza.</p>
+      <h2>Probabilità</h2>
+      <p>Calcolo combinatorio, probabilità classica, teorema della somma, eventi dipendenti, probabilità condizionata e teorema di Bayes. Simulatori con moneta, dado e carte.</p>
       <div class="card-tags">
         <span class="tag tag-green">Simulatori</span>
-        <span class="tag tag-gray">Derivate · Integrali · Serie</span>
+        <span class="tag tag-gray">Combinatorio · Bayes</span>
       </div>
       <span class="card-arrow">→</span>
     </a>
 
-    <a class="card teal soon" href="matematica/geometria.html">
+    <a class="card teal soon" href="matematica/analisi.html">
       <div class="card-num">Mat 02</div>
-      <h2>Geometria Analitica</h2>
-      <p>Coniche, curve parametriche e superfici con visualizzazione interattiva dei parametri.</p>
+      <h2>Analisi</h2>
+      <p>Derivate, integrali e serie con grafici interattivi: retta tangente, area sotto la curva, convergenza.</p>
       <div class="card-tags">
         <span class="tag tag-teal">Simulatori</span>
+        <span class="tag tag-gray">Derivate · Integrali</span>
+      </div>
+      <span class="card-arrow">→</span>
+    </a>
+
+    <a class="card amber soon" href="matematica/geometria_analitica.html">
+      <div class="card-num">Mat 03</div>
+      <h2>Geometria Analitica</h2>
+      <p>Coniche, curve parametriche e luoghi geometrici con visualizzazione interattiva dei parametri.</p>
+      <div class="card-tags">
+        <span class="tag tag-amber">Simulatori</span>
         <span class="tag tag-gray">Coniche · Curve</span>
       </div>
       <span class="card-arrow">→</span>
     </a>
 
-    <a class="card amber soon" href="matematica/complessi.html">
-      <div class="card-num">Mat 03</div>
-      <h2>Numeri Complessi</h2>
-      <p>Piano di Argand, operazioni, forme esponenziali e trasformazioni conformi visualizzate.</p>
+    <a class="card indigo soon" href="matematica/geometria_spazio.html">
+      <div class="card-num">Mat 04</div>
+      <h2>Geometria dello Spazio</h2>
+      <p>Solidi, sezioni, aree e volumi. Visualizzazione 3D interattiva di poliedri, sfere, coni e cilindri.</p>
       <div class="card-tags">
-        <span class="tag tag-amber">Simulatori</span>
-        <span class="tag tag-gray">Piano di Argand</span>
+        <span class="tag tag-indigo">3D interattivo</span>
+        <span class="tag tag-gray">Solidi · Sezioni</span>
       </div>
       <span class="card-arrow">→</span>
     </a>
 
-    <a class="card rose soon" href="matematica/probabilita.html">
-      <div class="card-num">Mat 04</div>
-      <h2>Probabilità e Statistica</h2>
-      <p>Distribuzioni, simulazioni di esperimenti casuali e legge dei grandi numeri animata.</p>
+    <a class="card rose soon" href="matematica/complessi.html">
+      <div class="card-num">Mat 05</div>
+      <h2>Numeri Complessi</h2>
+      <p>Piano di Argand, operazioni, forme esponenziali e trasformazioni conformi visualizzate.</p>
       <div class="card-tags">
         <span class="tag tag-rose">Simulatori</span>
-        <span class="tag tag-gray">Distribuzioni</span>
+        <span class="tag tag-gray">Piano di Argand</span>
       </div>
       <span class="card-arrow">→</span>
     </a>
@@ -166,6 +179,6 @@ footer{text-align:center;font-size:11px;color:#aaa;padding:32px;border-top:1px s
 
 </div>
 
-<footer>Didattica Pierri · Fisica II &amp; Matematica · Materiali interattivi</footer>
+<footer>Didattica Pierri · Fisica &amp; Matematica · Materiali interattivi</footer>
 </body>
 </html>
