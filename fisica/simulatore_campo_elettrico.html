@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Il Campo Elettrico — Dispensa Interattiva</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&family=Source+Code+Pro:wght@400&display=swap');
+:root{
+  --ink:#1a1a1e;--paper:#faf9f6;--accent:#b5351a;--accent2:#1a4b8c;
+  --muted:#6b6860;--border:#dddbd5;--surface:#f0ede6;--surf2:#fff;
+  --green:#1a6b3a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);line-height:1.75;font-weight:300}
+
+/* HERO */
+.hero{background:var(--ink);color:#fff;padding:72px 32px 52px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,0.012) 40px,rgba(255,255,255,0.012) 41px)}
+.eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;font-weight:600}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,54px);font-weight:700;line-height:1.1;margin-bottom:12px}
+.hero h1 em{color:#d4956a;font-style:italic}
+.hero-sub{font-size:15px;color:rgba(255,255,255,0.45);font-weight:300;max-width:500px;margin:0 auto 32px}
+.rule{width:50px;height:2px;background:var(--accent);margin:0 auto}
+
+/* NAV */
+.nav{background:var(--surf2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 32px}
+.nav-inner{max-width:860px;margin:0 auto;display:flex;overflow-x:auto}
+.nav a{display:block;padding:13px 16px;font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;text-decoration:none;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;transition:color 0.15s,border-color 0.15s}
+.nav a:hover,.nav a.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* PAGINA */
+.page{max-width:860px;margin:0 auto;padding:52px 32px}
+@media(max-width:600px){.page{padding:32px 16px}.nav{padding:0 12px}}
+
+.sec{margin-bottom:72px;scroll-margin-top:50px}
+h2{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;margin-bottom:5px}
+.sec-sub{font-size:13px;color:var(--muted);font-style:italic;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:18px}
+h3{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent2);margin:20px 0 7px}
+p{font-size:15px;margin-bottom:12px;color:#2a2a2e}
+ul{margin:6px 0 12px 22px;font-size:15px}
+li{margin-bottom:5px;color:#2a2a2e}
+strong{font-weight:600}
+
+.box{border-radius:3px;padding:13px 17px;margin:14px 0;font-size:14px;line-height:1.65}
+.box-f{background:var(--surf2);border:1px solid var(--border);border-left:3px solid var(--accent2);text-align:center}
+.box-f .f{font-family:'Playfair Display',serif;font-size:20px;color:var(--accent2);margin-bottom:4px}
+.box-f .fd{font-size:11px;color:var(--muted);font-family:'Source Code Pro',monospace}
+.box-n{background:#e8f0fa;border-left:3px solid var(--accent2);color:#1a3a6a}
+.box-w{background:#fdf3ee;border-left:3px solid var(--accent);color:#6a1a0a}
+
+/* SIM WRAPPER */
+.sim-wrap{background:var(--surf2);border:1px solid var(--border);border-radius:5px;padding:20px;margin:22px 0}
+.sim-title{font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sim-title::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.ctrl{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;align-items:center;font-size:12px;color:var(--muted)}
+.ctrl label{font-weight:600}
+.ctrl input[type=range]{width:100px;accent-color:var(--accent2)}
+.val{font-family:'Source Code Pro',monospace;font-size:11px;font-weight:600;min-width:36px;color:var(--ink)}
+.tbtn{padding:4px 11px;border-radius:3px;border:1px solid var(--border);background:var(--surf2);color:var(--muted);font-size:11px;cursor:pointer;font-family:'Source Sans 3',sans-serif}
+.tbtn:hover{background:var(--surface)}
+
+/* CARDS CARICHE */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:7px;margin-bottom:10px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:9px 11px;font-family:'Source Sans 3',sans-serif}
+.card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.clabel{font-size:12px;font-weight:600}
+.card label{font-size:11px;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:4px}
+.row{display:flex;align-items:center;gap:5px;margin-bottom:4px;font-size:11px;color:var(--muted)}
+.row input[type=number]{width:58px;padding:2px 5px;font-size:11px;border:1px solid var(--border);border-radius:3px;background:#fff;color:var(--ink)}
+.row input[type=range]{flex:1;accent-color:var(--accent2)}
+.qval{font-size:11px;font-weight:600;min-width:26px;text-align:right;color:var(--ink);font-family:'Source Code Pro',monospace}
+.row select{font-size:10px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;background:#fff}
+
+canvas{display:block;border:1px solid var(--border);border-radius:3px;background:#fff}
+.leg{display:flex;gap:12px;margin-top:8px;font-size:11px;color:var(--muted);flex-wrap:wrap;align-items:center}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:3px;vertical-align:middle}
+
+/* ── CALCOLATORE ── */
+.calc-point{background:var(--surf2);border:1px solid var(--border);border-radius:4px;padding:14px 16px;margin-bottom:12px}
+.point-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12px;color:var(--muted)}
+.point-row label{font-weight:600;min-width:22px}
+.point-row input[type=number]{width:88px;padding:4px 7px;font-size:12px;border:1px solid var(--border);border-radius:3px;background:#fff;color:var(--ink);font-family:'Source Code Pro',monospace}
+.point-row input[type=number]:focus{outline:none;border-color:var(--accent2)}
+.point-row select{font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:3px;background:#fff}
+.btn-calc{padding:6px 16px;border-radius:3px;border:none;background:var(--accent2);color:#fff;font-size:12px;cursor:pointer;font-weight:600;font-family:'Source Sans 3',sans-serif;transition:background 0.15s}
+.btn-calc:hover{background:#0f3060}
+.btn-reset-c{padding:6px 12px;border-radius:3px;border:1px solid var(--border);background:var(--surf2);color:var(--muted);font-size:12px;cursor:pointer;font-family:'Source Sans 3',sans-serif}
+
+.result-panel{background:var(--ink);color:#fff;border-radius:4px;padding:18px 20px;margin-bottom:12px;min-height:100px}
+.result-panel.empty{background:var(--surface);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:14px;font-style:italic;min-height:80px}
+.res-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:12px;font-weight:600}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.ri{background:rgba(255,255,255,0.06);border-radius:3px;padding:10px 12px}
+.ri .rl{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:3px;font-weight:600}
+.ri .rv{font-family:'Source Code Pro',monospace;font-size:16px;color:#fff}
+.ri .ru{font-size:10px;color:rgba(255,255,255,0.4);margin-left:3px}
+.ri.hi .rv{color:#7aaddf;font-size:20px}
+.ri.di .rv{color:#a8d8a8;font-size:13px;font-family:'Source Sans 3',sans-serif}
+
+.contrib-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+.contrib-tbl th{background:var(--ink);color:#fff;padding:6px 10px;text-align:left;font-size:10px;letter-spacing:0.5px;text-transform:uppercase;font-weight:400}
+.contrib-tbl td{padding:6px 10px;border-bottom:1px solid var(--border);font-family:'Source Code Pro',monospace;font-size:11px}
+.contrib-tbl tr:nth-child(even) td{background:var(--surface)}
+.contrib-tbl .tot td{background:var(--ink);color:#fff;font-weight:600}
+
+footer{text-align:center;font-size:11px;color:var(--muted);margin-top:52px;padding:22px 0;border-top:1px solid var(--border);letter-spacing:1px;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="eyebrow">Fisica II — Elettrostatica</div>
+  <h1>Il Campo<br><em>Elettrico</em></h1>
+  <p class="hero-sub">Dispensa didattica con simulatore delle linee di campo e calcolatore numerico con unità reali</p>
+  <div class="rule"></div>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#teoria" class="active">Teoria</a>
+    <a href="#simulatore">Linee di campo</a>
+    <a href="#calcolatore">Calcolatore E</a>
+    <a href="#esercizi">Esercizi</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- ══════════════════════════════ -->
+<!-- TEORIA -->
+<!-- ══════════════════════════════ -->
+<div class="sec" id="teoria">
+  <h2>1. Introduzione</h2>
+  <p class="sec-sub">Definizione e Legge di Coulomb</p>
+  <p>Il <strong>campo elettrico</strong> è una grandezza vettoriale definita in ogni punto dello spazio in presenza di cariche elettriche. Introdotto da Michael Faraday nel XIX secolo, il concetto di campo permette di descrivere le interazioni elettriche senza dover ricorrere all'azione a distanza istantanea.</p>
+  <p>Una carica elettrica <em>sorgente</em> modifica lo spazio circostante, creando un campo. Una seconda carica <em>di prova</em> immersa in quel campo subisce una forza proporzionale al campo stesso.</p>
+
+  <div class="box box-f">
+    <div class="f">E = k · Q / r²</div>
+    <div class="fd">k = 8,99 × 10⁹ N·m²/C² &nbsp;·&nbsp; r = distanza dalla carica &nbsp;·&nbsp; Q = carica sorgente</div>
+  </div>
+
+  <p>Il campo è diretto <strong>radialmente verso l'esterno</strong> se Q &gt; 0, e <strong>verso l'interno</strong> se Q &lt; 0. In presenza di più cariche vale il <strong>principio di sovrapposizione</strong>:</p>
+  <div class="box box-f">
+    <div class="f">E<sub>tot</sub> = E<sub>1</sub> + E<sub>2</sub> + … + E<sub>n</sub></div>
+    <div class="fd">Somma vettoriale dei campi generati da ciascuna carica</div>
+  </div>
+
+  <h3>Linee di campo — proprietà fondamentali</h3>
+  <ul>
+    <li>Le linee <strong>partono sempre</strong> dalle cariche positive (o dall'infinito).</li>
+    <li>Le linee <strong>arrivano sempre</strong> alle cariche negative (o all'infinito).</li>
+    <li>Non si incrociano mai: il campo ha un'unica direzione in ogni punto.</li>
+    <li>La <strong>densità</strong> delle linee indica l'intensità del campo.</li>
+  </ul>
+  <div class="box box-w">
+    ⚠ Da una carica negativa non possono mai <em>partire</em> linee di campo: le linee entrano nelle cariche negative, non ne escono.
+  </div>
+</div>
+
+<!-- ══════════════════════════════ -->
+<!-- SIMULATORE LINEE -->
+<!-- ══════════════════════════════ -->
+<div class="sec" id="simulatore">
+  <h2>2. Simulatore — Linee di Campo</h2>
+  <p class="sec-sub">Visualizzazione qualitativa per fino a 4 cariche puntiformi adimensionali</p>
+  <p>Il simulatore integra numericamente le linee di campo: a partire da punti vicini a ciascuna carica positiva, la linea segue il vettore <strong>E</strong> normalizzato con il metodo di Eulero. Le linee si fermano sulle cariche negative o escono dal dominio.</p>
+  <div class="box box-n">
+    💡 Attiva le cariche, imposta x, y e q con il cursore. Usa lo zoom (rotella) e trascina per spostarti.
+  </div>
+
+  <div class="sim-wrap">
+    <div class="sim-title">Simulatore — Linee di Campo Elettrico</div>
+    <div class="cards" id="cc"></div>
+    <div class="ctrl">
+      <label>Zoom</label>
+      <button class="tbtn" id="zm">−</button>
+      <input type="range" id="zoom" min="0.5" max="5" step="0.1" value="1">
+      <button class="tbtn" id="zp">+</button>
+      <span class="val" id="zv">1×</span>
+      <button class="tbtn" id="zr">reset</button>
+    </div>
+    <canvas id="cv" style="width:100%"></canvas>
+    <div class="leg">
+      <span><span class="dot" style="background:#e05252"></span>Carica +</span>
+      <span><span class="dot" style="background:#4a90d9"></span>Carica −</span>
+      <span style="font-size:10px">Trascina · Rotella = zoom</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ -->
+<!-- CALCOLATORE NUMERICO -->
+<!-- ══════════════════════════════ -->
+<div class="sec" id="calcolatore">
+  <h2>3. Calcolatore — Campo in un Punto P</h2>
+  <p class="sec-sub">Calcolo numerico preciso con unità reali (mC, µC, nC, pC · m, cm, mm)</p>
+  <p>Inserisci le cariche con le loro coordinate reali in metri e il punto P in cui vuoi calcolare il campo. Il calcolatore fornisce il modulo |E|, le componenti Ex ed Ey, l'angolo di direzione e il contributo di ciascuna carica.</p>
+  <div class="box box-n">
+    💡 Le coordinate del calcolatore sono indipendenti dal simulatore grafico sopra. Puoi usare unità diverse per cariche e coordinate.
+  </div>
+
+  <div class="sim-wrap">
+    <div class="sim-title">Calcolatore — E nel punto P</div>
+
+    <!-- Cariche calcolatore -->
+    <h3>Cariche sorgente</h3>
+    <div class="cards" id="cc_calc"></div>
+
+    <!-- Punto P -->
+    <h3>Punto P</h3>
+    <div class="calc-point">
+      <div class="point-row">
+        <label>x<sub>P</sub></label>
+        <input type="number" id="px" value="0" step="0.01">
+        <select id="pxu"><option value="1">m</option><option value="0.01">cm</option><option value="0.001">mm</option></select>
+        <label>y<sub>P</sub></label>
+        <input type="number" id="py" value="1" step="0.01">
+        <select id="pyu"><option value="1">m</option><option value="0.01">cm</option><option value="0.001">mm</option></select>
+        <button class="btn-calc" id="calcBtn">▶ Calcola</button>
+        <button class="btn-reset-c" id="calcResetBtn">Reset</button>
+      </div>
+    </div>
+
+    <!-- Risultato -->
+    <div class="result-panel empty" id="resultPanel">
+      Inserisci le cariche e il punto P, poi clicca ▶ Calcola
+    </div>
+
+    <!-- Canvas calcolatore -->
+    <canvas id="cv_calc" style="width:100%;height:280px;margin-top:10px"></canvas>
+
+    <!-- Tabella contributi -->
+    <div id="contribWrap" style="display:none;margin-top:12px">
+      <h3>Contributi individuali</h3>
+      <table class="contrib-tbl" id="contribTable"></table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ -->
+<!-- ESERCIZI -->
+<!-- ══════════════════════════════ -->
+<div class="sec" id="esercizi">
+  <h2>4. Esercizi Proposti</h2>
+  <p class="sec-sub">Con il simulatore delle linee di campo</p>
+  <ul>
+    <li>Inserisci una sola carica positiva: osserva la simmetria radiale delle linee.</li>
+    <li>Inserisci un dipolo (Q₁ = +1, Q₂ = −1): individua le linee che collegano le due cariche.</li>
+    <li>Prova due cariche positive uguali: dove si trova il punto di equilibrio?</li>
+    <li>Tre cariche: due positive e una negativa. Quante linee arrivano alla negativa?</li>
+  </ul>
+  <p class="sec-sub" style="margin-top:20px">Con il calcolatore numerico</p>
+  <ul>
+    <li>Due cariche +1 µC in (0,0) e −1 µC in (1 m, 0): calcola E nel punto (0.5 m, 0.5 m). Qual è l'angolo?</li>
+    <li>Una carica +2 µC in (0,0): calcola E a 10 cm, 50 cm e 1 m di distanza. Verifica che E ∝ 1/r².</li>
+    <li>Quattro cariche +1 nC ai vertici di un quadrato di lato 1 m: qual è E al centro? Perché?</li>
+    <li>Una carica +1 µC e una −1 µC separate di 2 m: dove il campo è più intenso? Verifica con il calcolatore.</li>
+  </ul>
+</div>
+
+<footer>Didattica Pierri · Fisica II · Il Campo Elettrico</footer>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SCRIPT SIMULATORE LINEE -->
+<!-- ══════════════════════════════════════════════════════ -->
+<script>
+// ─── SIMULATORE LINEE ───────────────────────────────────
+const CQ=[{x:2,y:0,q:1,on:true},{x:-2,y:0,q:-1,on:true},{x:0,y:0,q:1,on:false},{x:0,y:0,q:-1,on:false}];
+const PC=['#e05252','#3a8f3a','#c47a00','#7a4fc4'],NC=['#4a90d9','#d4537e','#5daa9a','#888'],NM=['Q₁','Q₂','Q₃','Q₄'];
+let zoom=1,panX=0,panY=0,drag=false,lx=0,ly=0;
+let WXf,WYf,S,W,H;
+
+function buildUI(){
+  const cc=document.getElementById('cc');cc.innerHTML='';
+  CQ.forEach((c,i)=>{
+    const col=c.q>=0?PC[i]:NC[i],d=document.createElement('div');d.className='card';
+    d.innerHTML=`<div class="card-head"><span class="clabel" id="lb${i}" style="color:${col}">${NM[i]} (${c.q>0?'+':''}${c.q})</span><label><input type="checkbox" id="on${i}" ${c.on?'checked':''}> attiva</label></div><div class="row"><label>x</label><input type="number" id="cx${i}" value="${c.x}" step="1" min="-7" max="7"><label>y</label><input type="number" id="cy${i}" value="${c.y}" step="1" min="-7" max="7"></div><div class="row"><label>q</label><input type="range" id="cq${i}" min="-3" max="3" step="1" value="${c.q}"><span class="qval" id="qv${i}">${c.q>0?'+':''}${c.q}</span></div>`;
+    cc.appendChild(d);
+    document.getElementById('on'+i).onchange=e=>{CQ[i].on=e.target.checked;draw()};
+    document.getElementById('cx'+i).oninput=e=>{CQ[i].x=+e.target.value||0;draw()};
+    document.getElementById('cy'+i).oninput=e=>{CQ[i].y=+e.target.value||0;draw()};
+    document.getElementById('cq'+i).oninput=e=>{
+      CQ[i].q=+e.target.value;
+      document.getElementById('qv'+i).textContent=(CQ[i].q>0?'+':'')+CQ[i].q;
+      const nc=CQ[i].q>=0?PC[i]:NC[i];
+      document.getElementById('lb'+i).style.color=nc;
+      document.getElementById('lb'+i).textContent=NM[i]+' ('+(CQ[i].q>0?'+':'')+CQ[i].q+')';
+      draw();
+    };
+  });
+}
+const zs=document.getElementById('zoom'),zv=document.getElementById('zv');
+zs.oninput=e=>{zoom=+e.target.value;zv.textContent=zoom.toFixed(1)+'×';draw()};
+document.getElementById('zm').onclick=()=>{zoom=Math.max(0.5,+(zoom-0.2).toFixed(1));zs.value=zoom;zv.textContent=zoom.toFixed(1)+'×';draw()};
+document.getElementById('zp').onclick=()=>{zoom=Math.min(5,+(zoom+0.2).toFixed(1));zs.value=zoom;zv.textContent=zoom.toFixed(1)+'×';draw()};
+document.getElementById('zr').onclick=()=>{zoom=1;panX=0;panY=0;zs.value=1;zv.textContent='1×';draw()};
+const cv=document.getElementById('cv');
+cv.addEventListener('mousedown',e=>{drag=true;lx=e.clientX;ly=e.clientY});
+window.addEventListener('mousemove',e=>{if(!drag)return;panX+=(e.clientX-lx)/S;panY-=(e.clientY-ly)/S;lx=e.clientX;ly=e.clientY;draw()});
+window.addEventListener('mouseup',()=>drag=false);
+cv.addEventListener('touchstart',e=>{drag=true;lx=e.touches[0].clientX;ly=e.touches[0].clientY},{passive:true});
+cv.addEventListener('touchmove',e=>{if(!drag)return;panX+=(e.touches[0].clientX-lx)/S;panY-=(e.touches[0].clientY-ly)/S;lx=e.touches[0].clientX;ly=e.touches[0].clientY;draw()},{passive:true});
+cv.addEventListener('touchend',()=>drag=false);
+cv.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(0.5,Math.min(5,zoom*(e.deltaY<0?1.1:0.93)));zoom=Math.round(zoom*10)/10;zs.value=zoom;zv.textContent=zoom.toFixed(1)+'×';draw()},{passive:false});
+
+function Efield(px,py){
+  let ex=0,ey=0;
+  CQ.forEach(c=>{if(!c.on||c.q===0)return;const dx=px-c.x,dy=py-c.y,r2=dx*dx+dy*dy;if(r2<1e-4)return;const f=c.q/(r2*Math.sqrt(r2));ex+=f*dx;ey+=f*dy});
+  return[ex,ey];
+}
+function integrateLine(x0,y0,dir){
+  const pts=[[x0,y0]];let x=x0,y=y0;
+  for(let s=0;s<3000;s++){
+    const[ex,ey]=Efield(x,y);const mag=Math.sqrt(ex*ex+ey*ey);if(mag<1e-9)break;
+    x+=dir*(ex/mag)*0.02;y+=dir*(ey/mag)*0.02;pts.push([x,y]);
+    if(Math.abs(x)>25||Math.abs(y)>25)break;
+    let stop=false;CQ.forEach(ch=>{if(ch.on&&ch.q!==0&&(x-ch.x)**2+(y-ch.y)**2<0.018)stop=true});if(stop)break;
+  }
+  return pts;
+}
+function drawArrowAt(ctx,pts,idx,col){
+  if(idx<=0||idx>=pts.length)return;
+  const[x1,y1]=pts[idx-1],[x2,y2]=pts[idx];
+  const ax=WXf(x2),ay=WYf(y2),bx=WXf(x1),by=WYf(y1);
+  const dx=ax-bx,dy=ay-by,l=Math.sqrt(dx*dx+dy*dy);if(l<0.5)return;
+  const nx=dx/l,ny=dy/l,as=6;
+  ctx.beginPath();ctx.moveTo(ax-nx*as-ny*as*0.5,ay-ny*as+nx*as*0.5);ctx.lineTo(ax,ay);ctx.lineTo(ax-nx*as+ny*as*0.5,ay-ny*as-nx*as*0.5);
+  ctx.strokeStyle=col;ctx.lineWidth=1.4;ctx.stroke();
+}
+function renderLine(ctx,pts,col){
+  if(pts.length<2)return;
+  ctx.beginPath();ctx.moveTo(WXf(pts[0][0]),WYf(pts[0][1]));
+  for(let i=1;i<pts.length;i++)ctx.lineTo(WXf(pts[i][0]),WYf(pts[i][1]));
+  ctx.strokeStyle=col;ctx.lineWidth=1.4;ctx.stroke();
+  drawArrowAt(ctx,pts,Math.floor(pts.length/2),col);
+}
+function draw(){
+  const w=cv.parentElement.clientWidth-40;cv.width=Math.max(w,300);cv.height=Math.round(cv.width*0.58);
+  W=cv.width;H=cv.height;S=(W/20)*zoom;
+  WXf=x=>W/2+(x+panX)*S;WYf=y=>H/2-(y+panY)*S;
+  const ctx=cv.getContext('2d');ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const wW=W/S;let gs=1;if(wW>30)gs=5;else if(wW>15)gs=2;else if(wW<4)gs=0.5;
+  const x0=-W/(2*S)-panX,x1=W/(2*S)-panX,y0b=-H/(2*S)-panY,y1b=H/(2*S)-panY;
+  ctx.strokeStyle='rgba(0,0,0,0.07)';ctx.lineWidth=0.5;
+  for(let i=Math.floor(x0/gs)*gs;i<=x1+gs;i+=gs){ctx.beginPath();ctx.moveTo(WXf(i),0);ctx.lineTo(WXf(i),H);ctx.stroke()}
+  for(let i=Math.floor(y0b/gs)*gs;i<=y1b+gs;i+=gs){ctx.beginPath();ctx.moveTo(0,WYf(i));ctx.lineTo(W,WYf(i));ctx.stroke()}
+  ctx.strokeStyle='rgba(0,0,0,0.18)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(0,WYf(0));ctx.lineTo(W,WYf(0));ctx.stroke();
+  ctx.beginPath();ctx.moveTo(WXf(0),0);ctx.lineTo(WXf(0),H);ctx.stroke();
+  ctx.fillStyle='rgba(0,0,0,0.3)';ctx.font='9px monospace';
+  for(let i=Math.floor(x0/gs)*gs;i<=x1+gs;i+=gs){if(Math.abs(i)<0.01)continue;ctx.textAlign='center';ctx.fillText(+i.toFixed(1),WXf(i),WYf(0)+11)}
+  for(let i=Math.floor(y0b/gs)*gs;i<=y1b+gs;i+=gs){if(Math.abs(i)<0.01)continue;ctx.textAlign='right';ctx.fillText(+i.toFixed(1),WXf(0)-3,WYf(i)+3)}
+  const active=CQ.filter(c=>c.on&&c.q!==0);
+  if(active.length>0){
+    const pos=active.filter(c=>c.q>0),neg=active.filter(c=>c.q<0);
+    const NL=24;
+    if(pos.length>0){
+      pos.forEach(c=>{const ci=CQ.indexOf(c),col=PC[ci],n=Math.round(NL*Math.abs(c.q));
+        for(let k=0;k<n;k++){const a=(2*Math.PI*k)/n,pts=integrateLine(c.x+0.18*Math.cos(a),c.y+0.18*Math.sin(a),1);renderLine(ctx,pts,col);}
+      });
+    } else {
+      neg.forEach(c=>{const ci=CQ.indexOf(c),col=NC[ci],n=Math.round(NL*Math.abs(c.q));
+        for(let k=0;k<n;k++){const a=(2*Math.PI*k)/n,pts=integrateLine(c.x+0.18*Math.cos(a),c.y+0.18*Math.sin(a),-1);renderLine(ctx,pts.slice().reverse(),col);}
+      });
+    }
+  }
+  // cariche
+  CQ.forEach((c,i)=>{if(!c.on)return;const cx=WXf(c.x),cy=WYf(c.y);
+    ctx.beginPath();ctx.arc(cx,cy,9,0,2*Math.PI);ctx.fillStyle=c.q>=0?PC[i]:NC[i];ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#fff';ctx.font='bold 13px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(c.q>=0?'+':'−',cx,cy+1);ctx.textBaseline='alphabetic';
+  });
+}
+buildUI();
+
+// ─── CALCOLATORE NUMERICO ────────────────────────────────
+const kC=8.9875e9;
+const UNITS_Q={'mC':1e-3,'µC':1e-6,'nC':1e-9,'pC':1e-12};
+const UNITS_XY={'m':1,'cm':0.01,'mm':0.001};
+const calcCharges=[
+  {q:1,uq:'µC',x:0,ux:'m',y:0,uy:'m',on:true},
+  {q:-1,uq:'µC',x:1,ux:'m',y:0,uy:'m',on:true},
+  {q:0,uq:'µC',x:0,ux:'m',y:1,uy:'m',on:false},
+  {q:0,uq:'µC',x:0,ux:'m',y:0,uy:'m',on:false},
+];
+
+function buildCalcUI(){
+  const cc=document.getElementById('cc_calc');cc.innerHTML='';
+  calcCharges.forEach((c,i)=>{
+    const col=c.q>=0?PC[i]:NC[i],d=document.createElement('div');d.className='card';
+    d.innerHTML=`<div class="card-head"><span class="clabel" id="clbl${i}" style="color:${col}">${NM[i]}</span><label><input type="checkbox" id="con${i}" ${c.on?'checked':''}> attiva</label></div>
+    <div class="row"><label>q</label><input type="number" id="cq_c${i}" value="${c.q}" step="0.1" style="width:70px">
+    <select id="cuq${i}"><option value="mC" ${c.uq==='mC'?'selected':''}>mC</option><option value="µC" ${c.uq==='µC'?'selected':''}>µC</option><option value="nC" ${c.uq==='nC'?'selected':''}>nC</option><option value="pC" ${c.uq==='pC'?'selected':''}>pC</option></select></div>
+    <div class="row"><label>x</label><input type="number" id="cx_c${i}" value="${c.x}" step="0.01" style="width:70px">
+    <select id="cux${i}"><option value="m" ${c.ux==='m'?'selected':''}>m</option><option value="cm" ${c.ux==='cm'?'selected':''}>cm</option><option value="mm" ${c.ux==='mm'?'selected':''}>mm</option></select></div>
+    <div class="row"><label>y</label><input type="number" id="cy_c${i}" value="${c.y}" step="0.01" style="width:70px">
+    <select id="cuy${i}"><option value="m" ${c.uy==='m'?'selected':''}>m</option><option value="cm" ${c.uy==='cm'?'selected':''}>cm</option><option value="mm" ${c.uy==='mm'?'selected':''}>mm</option></select></div>`;
+    cc.appendChild(d);
+    document.getElementById('con'+i).onchange=e=>{calcCharges[i].on=e.target.checked;};
+    document.getElementById('cq_c'+i).oninput=e=>{calcCharges[i].q=+e.target.value;const nc=calcCharges[i].q>=0?PC[i]:NC[i];document.getElementById('clbl'+i).style.color=nc;};
+    document.getElementById('cuq'+i).onchange=e=>{calcCharges[i].uq=e.target.value;};
+    document.getElementById('cx_c'+i).oninput=e=>{calcCharges[i].x=+e.target.value;};
+    document.getElementById('cux'+i).onchange=e=>{calcCharges[i].ux=e.target.value;};
+    document.getElementById('cy_c'+i).oninput=e=>{calcCharges[i].y=+e.target.value;};
+    document.getElementById('cuy'+i).onchange=e=>{calcCharges[i].uy=e.target.value;};
+  });
+}
+
+function getCalcChargesSI(){
+  return calcCharges.map((c,i)=>({
+    q:c.q*UNITS_Q[c.uq],x:c.x*UNITS_XY[c.ux],y:c.y*UNITS_XY[c.uy],
+    on:c.on,color:c.q>=0?PC[i]:NC[i],name:NM[i],orig:c
+  }));
+}
+
+function fmtE(v){
+  const a=Math.abs(v);if(a===0)return'0 N/C';
+  if(a>=1e6)return(v/1e6).toFixed(4)+' MN/C';
+  if(a>=1e3)return(v/1e3).toFixed(4)+' kN/C';
+  if(a>=1)return v.toFixed(4)+' N/C';
+  if(a>=1e-3)return(v*1e3).toFixed(4)+' mN/C';
+  return v.toExponential(4)+' N/C';
+}
+
+document.getElementById('calcBtn').onclick=calculate;
+document.getElementById('calcResetBtn').onclick=()=>{
+  calcCharges.forEach((c,i)=>{c.q=i<2?[1,-1][i]:0;c.uq='µC';c.x=i<2?[0,1][i]:0;c.ux='m';c.y=0;c.uy='m';c.on=i<2;});
+  buildCalcUI();
+  document.getElementById('px').value=0;document.getElementById('py').value=1;
+  const rp=document.getElementById('resultPanel');rp.className='result-panel empty';
+  rp.innerHTML='Inserisci le cariche e il punto P, poi clicca ▶ Calcola';
+  document.getElementById('contribWrap').style.display='none';
+  const cv2=document.getElementById('cv_calc');const ctx2=cv2.getContext('2d');
+  ctx2.clearRect(0,0,cv2.width,cv2.height);ctx2.fillStyle='#fff';ctx2.fillRect(0,0,cv2.width,cv2.height);
+};
+
+function calculate(){
+  const csSI=getCalcChargesSI();
+  const px=+document.getElementById('px').value*UNITS_XY[document.getElementById('pxu').value];
+  const py=+document.getElementById('py').value*UNITS_XY[document.getElementById('pyu').value];
+  const active=csSI.filter(c=>c.on&&c.q!==0);
+  if(!active.length){showCalcError('Nessuna carica attiva.');return;}
+  let Ex=0,Ey=0;const contribs=[];let tooClose=false;
+  active.forEach(c=>{
+    const dx=px-c.x,dy=py-c.y,r2=dx*dx+dy*dy,r=Math.sqrt(r2);
+    if(r<1e-10){tooClose=true;return;}
+    const Emag=kC*Math.abs(c.q)/r2;const sign=c.q>0?1:-1;
+    const ex=sign*Emag*dx/r,ey=sign*Emag*dy/r;
+    Ex+=ex;Ey+=ey;
+    contribs.push({name:c.name,color:c.color,r,ex,ey,Emag:kC*c.q/r2,c});
+  });
+  if(tooClose){showCalcError('⚠ Il punto P coincide con una carica — il campo diverge.');return;}
+  const Etot=Math.sqrt(Ex*Ex+Ey*Ey);
+  const theta=((Math.atan2(Ey,Ex)*180/Math.PI)%360+360)%360;
+  const dirs=['→ Est','↗ Nord-Est','↑ Nord','↖ Nord-Ovest','← Ovest','↙ Sud-Ovest','↓ Sud','↘ Sud-Est'];
+  const dir=dirs[Math.round(theta/45)%8];
+  // risultato
+  const rp=document.getElementById('resultPanel');rp.className='result-panel';
+  rp.innerHTML=`<div class="res-title">Campo in P = (${document.getElementById('px').value} ${document.getElementById('pxu').value}, ${document.getElementById('py').value} ${document.getElementById('pyu').value})</div>
+  <div class="res-grid">
+    <div class="ri hi"><div class="rl">Modulo |E|</div><div class="rv">${fmtE(Etot)}</div></div>
+    <div class="ri"><div class="rl">Componente Ex</div><div class="rv">${fmtE(Ex)}</div></div>
+    <div class="ri"><div class="rl">Componente Ey</div><div class="rv">${fmtE(Ey)}</div></div>
+    <div class="ri"><div class="rl">Angolo θ</div><div class="rv">${theta.toFixed(2)}<span class="ru">°</span></div></div>
+    <div class="ri di"><div class="rl">Direzione</div><div class="rv">${dir}</div></div>
+    <div class="ri"><div class="rl">Notaz. scientifica</div><div class="rv" style="font-size:12px">${Etot.toExponential(4)}<span class="ru">N/C</span></div></div>
+  </div>`;
+  // tabella
+  const wrap=document.getElementById('contribWrap'),tbl=document.getElementById('contribTable');
+  wrap.style.display='block';
+  let rows=contribs.map(c=>`<tr>
+    <td style="color:${c.color};font-weight:600">${c.name}</td>
+    <td>${c.c.orig.q} ${c.c.orig.uq}</td>
+    <td>${c.r.toExponential(3)} m</td>
+    <td>${fmtE(Math.abs(kC*c.c.q/c.r/c.r))}</td>
+    <td>${fmtE(c.ex)}</td>
+    <td>${fmtE(c.ey)}</td>
+  </tr>`).join('');
+  rows+=`<tr class="tot"><td colspan="4">Totale</td><td>${fmtE(Ex)}</td><td>${fmtE(Ey)}</td></tr>`;
+  tbl.innerHTML=`<tr><th>Carica</th><th>Q</th><th>r</th><th>|Eᵢ|</th><th>Eᵢx</th><th>Eᵢy</th></tr>${rows}`;
+  // canvas
+  drawCalcScene(px,py,Ex,Ey,Etot,csSI,contribs);
+}
+
+function showCalcError(msg){
+  const rp=document.getElementById('resultPanel');rp.className='result-panel empty';rp.innerHTML=msg;
+  document.getElementById('contribWrap').style.display='none';
+}
+
+function drawCalcScene(px,py,Ex,Ey,Etot,csSI,contribs){
+  const cv2=document.getElementById('cv_calc');
+  const w=cv2.parentElement.clientWidth-40;cv2.width=Math.max(w,300);cv2.height=280;
+  const ctx=cv2.getContext('2d');const cW=cv2.width,cH=cv2.height;
+  ctx.clearRect(0,0,cW,cH);ctx.fillStyle='#fff';ctx.fillRect(0,0,cW,cH);
+  const active=csSI.filter(c=>c.on&&c.q!==0);
+  const allX=[px,...active.map(c=>c.x)],allY=[py,...active.map(c=>c.y)];
+  const xmin=Math.min(...allX),xmax=Math.max(...allX),ymin=Math.min(...allY),ymax=Math.max(...allY);
+  const span=Math.max(xmax-xmin,ymax-ymin)||1,pad=span*0.4;
+  const wxmin=xmin-pad,wxmax=xmax+pad,wymin=ymin-pad,wymax=ymax+pad;
+  const pl=52,pr=16,pt=20,pb=36;
+  const scX=(cW-pl-pr)/(wxmax-wxmin),scY=(cH-pt-pb)/(wymax-wymin),sc=Math.min(scX,scY);
+  const cx0=pl+(cW-pl-pr)/2-(wxmin+wxmax)/2*sc;
+  const cy0=cH-pb-(cH-pt-pb)/2+(wymin+wymax)/2*sc;
+  const wx=x=>cx0+x*sc,wy=y=>cy0-y*sc;
+  // griglia
+  function ns(sp){const r=sp/5,m=Math.pow(10,Math.floor(Math.log10(r))),n=r/m;return(n<2?1:n<5?2:5)*m;}
+  const gs=ns(wxmax-wxmin);
+  ctx.strokeStyle='rgba(0,0,0,0.07)';ctx.lineWidth=0.5;
+  for(let x=Math.ceil(wxmin/gs)*gs;x<=wxmax;x+=gs){ctx.beginPath();ctx.moveTo(wx(x),pt);ctx.lineTo(wx(x),cH-pb);ctx.stroke();}
+  for(let y=Math.ceil(wymin/gs)*gs;y<=wymax;y+=gs){ctx.beginPath();ctx.moveTo(pl,wy(y));ctx.lineTo(cW-pr,wy(y));ctx.stroke();}
+  ctx.strokeStyle='rgba(0,0,0,0.15)';ctx.lineWidth=0.8;
+  if(wymin<=0&&wymax>=0){ctx.beginPath();ctx.moveTo(pl,wy(0));ctx.lineTo(cW-pr,wy(0));ctx.stroke();}
+  if(wxmin<=0&&wxmax>=0){ctx.beginPath();ctx.moveTo(wx(0),pt);ctx.lineTo(wx(0),cH-pb);ctx.stroke();}
+  ctx.fillStyle='rgba(0,0,0,0.28)';ctx.font='9px monospace';ctx.textAlign='center';
+  for(let x=Math.ceil(wxmin/gs)*gs;x<=wxmax;x+=gs){const l=x>=1?x.toFixed(1)+'m':(x*100).toFixed(0)+'cm';ctx.fillText(l,wx(x),cH-pb+11);}
+  ctx.textAlign='right';
+  for(let y=Math.ceil(wymin/gs)*gs;y<=wymax;y+=gs){if(Math.abs(y)<gs*0.01)continue;const l=y>=1?y.toFixed(1)+'m':(y*100).toFixed(0)+'cm';ctx.fillText(l,pl-3,wy(y)+3);}
+  // contributi
+  contribs.forEach(c=>{
+    const len=Math.sqrt(c.ex*c.ex+c.ey*c.ey);if(len<1e-10)return;
+    const al=Math.min(cW,cH)*0.1,nx=c.ex/len,ny=c.ey/len;
+    ctx.strokeStyle=c.color+'88';ctx.lineWidth=1;ctx.setLineDash([3,2]);
+    ctx.beginPath();ctx.moveTo(wx(px),wy(py));ctx.lineTo(wx(px)+nx*al,wy(py)-ny*al);ctx.stroke();ctx.setLineDash([]);
+  });
+  // freccia totale
+  if(Etot>0){
+    const al=Math.min(cW,cH)*0.18,nx=Ex/Etot,ny=Ey/Etot;
+    const x1=wx(px),y1=wy(py),x2=x1+nx*al,y2=y1-ny*al;
+    ctx.strokeStyle='rgba(0,0,0,0.1)';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    ctx.strokeStyle='#1a4b8c';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    const as=8;
+    ctx.beginPath();ctx.moveTo(x2-nx*as+ny*as*0.4,y2+ny*as+nx*as*0.4);ctx.lineTo(x2,y2);
+    ctx.moveTo(x2-nx*as-ny*as*0.4,y2+ny*as-nx*as*0.4);ctx.lineTo(x2,y2);ctx.strokeStyle='#1a4b8c';ctx.lineWidth=2.5;ctx.stroke();
+    ctx.fillStyle='#1a4b8c';ctx.font='bold 10px monospace';ctx.textAlign='left';ctx.fillText('E  θ='+((((Math.atan2(Ey,Ex)*180/Math.PI)%360)+360)%360).toFixed(1)+'°',x2+5,y2);
+  }
+  // cariche
+  active.forEach(c=>{
+    ctx.beginPath();ctx.arc(wx(c.x),wy(c.y),8,0,2*Math.PI);ctx.fillStyle=c.color;ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#fff';ctx.font='bold 12px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(c.q>0?'+':'−',wx(c.x),wy(c.y)+1);ctx.textBaseline='alphabetic';
+    ctx.fillStyle=c.color;ctx.font='10px monospace';ctx.textAlign='left';ctx.fillText(c.name,wx(c.x)+10,wy(c.y)-5);
+  });
+  // punto P
+  ctx.beginPath();ctx.arc(wx(px),wy(py),5,0,2*Math.PI);ctx.fillStyle='#1a4b8c';ctx.fill();
+  ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle='#1a4b8c';ctx.font='bold 11px monospace';ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillText('P',wx(px)+7,wy(py)-4);
+}
+
+// resize
+function resizeAll(){draw();}
+buildCalcUI();
+window.addEventListener('resize',resizeAll);
+setTimeout(resizeAll,60);
+
+// nav attiva
+const secs=document.querySelectorAll('.sec');
+const navLinks=document.querySelectorAll('.nav a');
+window.addEventListener('scroll',()=>{
+  let cur='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-70)cur=s.id;});
+  navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+},{passive:true});
+</script>
+</body>
+</html>
