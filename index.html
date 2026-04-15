@@ -7,178 +7,54 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Source Sans 3',sans-serif;background:#faf9f6;color:#1a1a1e;min-height:100vh}
-
-.hero{background:#1a1a1e;color:#fff;padding:80px 32px 60px;text-align:center;position:relative;overflow:hidden}
+body{font-family:'Source Sans 3',sans-serif;background:#1a1a1e;color:#fff;min-height:100vh;display:flex;flex-direction:column}
+.hero{text-align:center;padding:100px 32px 60px;position:relative;overflow:hidden;flex:0 0 auto}
 .hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,0.012) 40px,rgba(255,255,255,0.012) 41px)}
-.eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:18px;font-weight:600}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,56px);font-weight:700;line-height:1.1;margin-bottom:14px}
+.eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:20px;font-weight:600}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(36px,6vw,64px);font-weight:700;line-height:1.08;margin-bottom:14px}
 .hero h1 em{color:#d4956a;font-style:italic}
-.hero p{font-size:16px;color:rgba(255,255,255,0.45);font-weight:300;max-width:500px;margin:0 auto 36px}
-.rule{width:50px;height:2px;background:#b5351a;margin:0 auto}
-
-.container{max-width:900px;margin:0 auto;padding:60px 32px}
-@media(max-width:600px){.container{padding:40px 16px}}
-
-.section-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:24px;display:flex;align-items:center;gap:12px}
-.section-label::after{content:'';flex:1;height:1px;background:#dddbd5}
-.lf{color:#b5351a}
-.lm{color:#1a6b3a}
-
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-bottom:52px}
-
-.card{background:#fff;border:1px solid #dddbd5;border-radius:6px;padding:26px 26px 60px;text-decoration:none;color:inherit;display:block;transition:transform 0.18s,box-shadow 0.18s;position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;transition:width 0.18s}
-.card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,0.1)}
-.card:hover::before{width:5px}
-
-.card.blue::before{background:#1a4b8c}.card.blue:hover .card-arrow{color:#1a4b8c}
-.card.red::before{background:#b5351a}.card.red:hover .card-arrow{color:#b5351a}
-.card.purple::before{background:#5a1a8c}.card.purple:hover .card-arrow{color:#5a1a8c}
-.card.green::before{background:#1a6b3a}.card.green:hover .card-arrow{color:#1a6b3a}
-.card.teal::before{background:#0e6b6b}.card.teal:hover .card-arrow{color:#0e6b6b}
-.card.amber::before{background:#8c5e1a}.card.amber:hover .card-arrow{color:#8c5e1a}
-.card.rose::before{background:#8c1a4b}.card.rose:hover .card-arrow{color:#8c1a4b}
-.card.indigo::before{background:#2d1a8c}.card.indigo:hover .card-arrow{color:#2d1a8c}
-
-.card-num{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#bbb;margin-bottom:10px}
-.card h2{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;margin-bottom:8px;color:#1a1a1e;line-height:1.25}
-.card p{font-size:13px;color:#6b6860;line-height:1.6;font-weight:300}
-
-.card-tags{display:flex;gap:5px;flex-wrap:wrap;position:absolute;bottom:18px;left:26px;right:44px}
-.tag{font-size:10px;padding:2px 7px;border-radius:2px;letter-spacing:0.5px;text-transform:uppercase;font-weight:600}
-.tag-blue{background:#e8f0fa;color:#1a4b8c}
-.tag-red{background:#fdf0ed;color:#b5351a}
-.tag-purple{background:#f3eefa;color:#5a1a8c}
-.tag-green{background:#e8f5ee;color:#1a6b3a}
-.tag-teal{background:#e0f5f5;color:#0e6b6b}
-.tag-amber{background:#faf0e0;color:#8c5e1a}
-.tag-rose{background:#fae8f0;color:#8c1a4b}
-.tag-indigo{background:#eae8fa;color:#2d1a8c}
-.tag-gray{background:#f0ede6;color:#6b6860}
-
-.card-arrow{position:absolute;bottom:20px;right:22px;font-size:20px;color:#dddbd5;transition:color 0.18s,transform 0.18s}
-.card:hover .card-arrow{transform:translateX(3px)}
-
-.card.soon{opacity:0.52;pointer-events:none}
-.card.soon::after{content:'prossimamente';position:absolute;top:14px;right:14px;font-size:9px;letter-spacing:1px;text-transform:uppercase;background:#f0ede6;color:#aaa;padding:2px 8px;border-radius:2px;font-weight:600}
-
-footer{text-align:center;font-size:11px;color:#aaa;padding:32px;border-top:1px solid #dddbd5;letter-spacing:1px;text-transform:uppercase}
+.hero p{font-size:16px;color:rgba(255,255,255,0.4);font-weight:300;max-width:420px;margin:0 auto}
+.cards{display:flex;flex-wrap:wrap;justify-content:center;gap:24px;padding:60px 32px 80px;flex:1;align-items:center}
+@media(max-width:600px){.cards{padding:40px 20px 60px;gap:18px}}
+.card{background:transparent;border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:44px 40px;text-decoration:none;color:#fff;display:block;width:320px;max-width:100%;transition:transform 0.2s,border-color 0.2s,background 0.2s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.2s}
+.card.fisica::before{background:radial-gradient(ellipse at 30% 50%,rgba(181,53,26,0.15),transparent 70%)}
+.card.mat::before{background:radial-gradient(ellipse at 30% 50%,rgba(26,107,58,0.15),transparent 70%)}
+.card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,0.28)}
+.card:hover::before{opacity:1}
+.card-icon{font-size:38px;margin-bottom:20px;display:block;line-height:1}
+.card h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin-bottom:10px;line-height:1.2}
+.card p{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.65;font-weight:300;margin-bottom:28px}
+.card-link{font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;display:flex;align-items:center;gap:8px;transition:gap 0.2s}
+.card.fisica .card-link{color:#e07a5a}
+.card.mat .card-link{color:#74c99a}
+.card:hover .card-link{gap:12px}
+.card-count{position:absolute;top:20px;right:20px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);font-weight:600}
+footer{text-align:center;font-size:11px;color:rgba(255,255,255,0.2);padding:24px;letter-spacing:1px;text-transform:uppercase;border-top:1px solid rgba(255,255,255,0.06)}
 </style>
 </head>
 <body>
-
 <div class="hero">
   <div class="eyebrow">Didattica Pierri</div>
   <h1>Dispense<br><em>Interattive</em></h1>
-  <p>Materiali didattici con simulatori interattivi per Fisica e Matematica</p>
-  <div class="rule"></div>
+  <p>Scegli la materia per accedere alle dispense con simulatori interattivi</p>
 </div>
-
-<div class="container">
-
-  <!-- FISICA -->
-  <div class="section-label lf">⚡ Fisica II — Elettrostatica</div>
-  <div class="grid">
-
-    <a class="card blue" href="simulatore_campo_elettrico.html">
-      <div class="card-num">Fisica 01</div>
-      <h2>Il Campo Elettrico</h2>
-      <p>Linee di campo di fino a 4 cariche puntiformi nel piano xy, con zoom e pan interattivi.</p>
-      <div class="card-tags">
-        <span class="tag tag-blue">Simulatore 2D</span>
-        <span class="tag tag-gray">Linee di campo</span>
-      </div>
-      <span class="card-arrow">→</span>
-    </a>
-
-    <a class="card red" href="dispensa_potenziale_completa.html">
-      <div class="card-num">Fisica 02</div>
-      <h2>Il Potenziale Elettrico</h2>
-      <p>Equipotenziali 2D e superficie 3D di V(x,y) per fino a 4 cariche. Vista ruotabile.</p>
-      <div class="card-tags">
-        <span class="tag tag-red">2D + 3D</span>
-        <span class="tag tag-gray">Equipotenziali</span>
-      </div>
-      <span class="card-arrow">→</span>
-    </a>
-
-    <a class="card purple" href="dispensa_distribuzioni.html">
-      <div class="card-num">Fisica 03</div>
-      <h2>Distribuzioni di Carica</h2>
-      <p>Campo di piano, retta, sfera e conduttore irregolare. Mappa |E| e effetto punta.</p>
-      <div class="card-tags">
-        <span class="tag tag-purple">4 simulatori</span>
-        <span class="tag tag-gray">Effetto punta</span>
-      </div>
-      <span class="card-arrow">→</span>
-    </a>
-
-  </div>
-
-  <!-- MATEMATICA -->
-  <div class="section-label lm">∫ Matematica</div>
-  <div class="grid">
-
-    <a class="card green" href="matematica/probabilita.html">
-      <div class="card-num">Mat 01</div>
-      <h2>Probabilità</h2>
-      <p>Calcolo combinatorio, probabilità classica, teorema della somma, eventi dipendenti, probabilità condizionata e teorema di Bayes. Simulatori con moneta, dado e carte.</p>
-      <div class="card-tags">
-        <span class="tag tag-green">Simulatori</span>
-        <span class="tag tag-gray">Combinatorio · Bayes</span>
-      </div>
-      <span class="card-arrow">→</span>
-    </a>
-
-    <a class="card teal soon" href="matematica/analisi.html">
-      <div class="card-num">Mat 02</div>
-      <h2>Analisi</h2>
-      <p>Derivate, integrali e serie con grafici interattivi: retta tangente, area sotto la curva, convergenza.</p>
-      <div class="card-tags">
-        <span class="tag tag-teal">Simulatori</span>
-        <span class="tag tag-gray">Derivate · Integrali</span>
-      </div>
-      <span class="card-arrow">→</span>
-    </a>
-
-    <a class="card amber soon" href="matematica/geometria_analitica.html">
-      <div class="card-num">Mat 03</div>
-      <h2>Geometria Analitica</h2>
-      <p>Coniche, curve parametriche e luoghi geometrici con visualizzazione interattiva dei parametri.</p>
-      <div class="card-tags">
-        <span class="tag tag-amber">Simulatori</span>
-        <span class="tag tag-gray">Coniche · Curve</span>
-      </div>
-      <span class="card-arrow">→</span>
-    </a>
-
-    <a class="card indigo soon" href="matematica/geometria_spazio.html">
-      <div class="card-num">Mat 04</div>
-      <h2>Geometria dello Spazio</h2>
-      <p>Solidi, sezioni, aree e volumi. Visualizzazione 3D interattiva di poliedri, sfere, coni e cilindri.</p>
-      <div class="card-tags">
-        <span class="tag tag-indigo">3D interattivo</span>
-        <span class="tag tag-gray">Solidi · Sezioni</span>
-      </div>
-      <span class="card-arrow">→</span>
-    </a>
-
-    <a class="card rose soon" href="matematica/complessi.html">
-      <div class="card-num">Mat 05</div>
-      <h2>Numeri Complessi</h2>
-      <p>Piano di Argand, operazioni, forme esponenziali e trasformazioni conformi visualizzate.</p>
-      <div class="card-tags">
-        <span class="tag tag-rose">Simulatori</span>
-        <span class="tag tag-gray">Piano di Argand</span>
-      </div>
-      <span class="card-arrow">→</span>
-    </a>
-
-  </div>
-
+<div class="cards">
+  <a class="card fisica" href="fisica/index.html">
+    <span class="card-count">3 dispense</span>
+    <span class="card-icon">⚡</span>
+    <h2>Fisica II</h2>
+    <p>Elettrostatica: campo elettrico, potenziale, distribuzioni di carica. Simulatori 2D e 3D.</p>
+    <div class="card-link">Vai alle dispense →</div>
+  </a>
+  <a class="card mat" href="matematica/index.html">
+    <span class="card-count">5 dispense</span>
+    <span class="card-icon">∫</span>
+    <h2>Matematica</h2>
+    <p>Probabilità, analisi, geometria analitica, geometria dello spazio, numeri complessi.</p>
+    <div class="card-link">Vai alle dispense →</div>
+  </a>
 </div>
-
-<footer>Didattica Pierri · Fisica &amp; Matematica · Materiali interattivi</footer>
+<footer>Didattica Pierri · Materiali interattivi</footer>
 </body>
 </html>
