@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+
+<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -13,21 +15,25 @@ body{font-family:'Source Sans 3',sans-serif;background:#1a1a1e;color:#fff;min-he
 .eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:16px;font-weight:600}
 h1{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,56px);font-weight:700;line-height:1.1;margin-bottom:10px}
 h1 em{color:#d4956a;font-style:italic}
-.sub{font-size:15px;color:rgba(255,255,255,0.35);font-weight:300;margin-bottom:0}
-
-.section{max-width:860px;margin:0 auto;padding:48px 32px 0}
+.sub{font-size:15px;color:rgba(255,255,255,0.35);font-weight:300}
+.section{max-width:880px;margin:0 auto;padding:48px 32px 0}
 @media(max-width:600px){.section{padding:32px 16px 0}}
 .sec-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:18px;display:flex;align-items:center;gap:12px}
 .sec-label::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.1)}
 .sec-label.ph{color:#e07a5a}
 .sec-label.ma{color:#74c99a}
-
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:48px}
 .card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:22px 22px 54px;text-decoration:none;color:#fff;display:block;transition:transform 0.18s,background 0.18s,border-color 0.18s;position:relative;overflow:hidden}
 .card:hover{transform:translateY(-3px);background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.22)}
 .card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%}
-.c1::before{background:#e07a5a}.c2::before{background:#e0a05a}.c3::before{background:#e0ca5a}
-.c4::before{background:#74c99a}.c5::before{background:#5ac9c9}.c6::before{background:#7a9ae0}.c7::before{background:#c97ab4}.c8::before{background:#c9947a}
+.c1::before{background:#e07a5a}
+.c2::before{background:#e0a05a}
+.c3::before{background:#e0ca5a}
+.c4::before{background:#74c99a}
+.c5::before{background:#5ac9c9}
+.c6::before{background:#7a9ae0}
+.c7::before{background:#c97ab4}
+.c8::before{background:#c9947a}
 .num{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:8px}
 .card h2{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:6px;line-height:1.25}
 .card p{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6;font-weight:300}
@@ -35,8 +41,8 @@ h1 em{color:#d4956a;font-style:italic}
 .tag{font-size:9px;padding:2px 6px;border-radius:2px;letter-spacing:0.5px;text-transform:uppercase;font-weight:600;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.45)}
 .arrow{position:absolute;bottom:16px;right:18px;font-size:18px;color:rgba(255,255,255,0.2);transition:color 0.18s,transform 0.18s}
 .card:hover .arrow{color:rgba(255,255,255,0.7);transform:translateX(3px)}
-.card.soon{opacity:0.38;pointer-events:none}
-.card.soon::after{content:'presto';position:absolute;top:12px;right:12px;font-size:9px;letter-spacing:1px;text-transform:uppercase;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.35);padding:2px 7px;border-radius:2px;font-weight:600}
+.card.soon{opacity:0.35;pointer-events:none}
+.card.soon::after{content:'presto';position:absolute;top:12px;right:12px;font-size:9px;letter-spacing:1px;text-transform:uppercase;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.28);padding:2px 7px;border-radius:2px;font-weight:600}
 footer{text-align:center;font-size:11px;color:rgba(255,255,255,0.15);padding:32px;border-top:1px solid rgba(255,255,255,0.06);letter-spacing:1px;text-transform:uppercase;margin-top:16px}
 </style>
 </head>
@@ -49,15 +55,18 @@ footer{text-align:center;font-size:11px;color:rgba(255,255,255,0.15);padding:32p
 </div>
 
 <div class="section">
+
   <div class="sec-label ph">⚡ Fisica II — Elettrostatica</div>
   <div class="grid">
+
     <a class="card c1" href="simulatore_campo_elettrico.html">
       <div class="num">Fisica 01</div>
       <h2>Il Campo Elettrico</h2>
-      <p>Linee di campo di fino a 4 cariche. Simulatore grafico e calcolatore numerico con unità reali.</p>
+      <p>Linee di campo di fino a 4 cariche. Simulatore grafico e calcolatore numerico con unità reali (µC, nC, m, cm).</p>
       <div class="tags"><span class="tag">Simulatore 2D</span><span class="tag">Calcolatore E</span></div>
       <span class="arrow">→</span>
     </a>
+
     <a class="card c2" href="dispensa_potenziale_completa.html">
       <div class="num">Fisica 02</div>
       <h2>Il Potenziale Elettrico</h2>
@@ -65,6 +74,7 @@ footer{text-align:center;font-size:11px;color:rgba(255,255,255,0.15);padding:32p
       <div class="tags"><span class="tag">2D + 3D</span><span class="tag">Equipotenziali</span></div>
       <span class="arrow">→</span>
     </a>
+
     <a class="card c3" href="dispensa_distribuzioni.html">
       <div class="num">Fisica 03</div>
       <h2>Distribuzioni di Carica</h2>
@@ -72,10 +82,12 @@ footer{text-align:center;font-size:11px;color:rgba(255,255,255,0.15);padding:32p
       <div class="tags"><span class="tag">4 simulatori</span><span class="tag">Effetto punta</span></div>
       <span class="arrow">→</span>
     </a>
+
   </div>
 
   <div class="sec-label ma">∫ Matematica</div>
   <div class="grid">
+
     <a class="card c4" href="matematica/probabilita.html">
       <div class="num">Mat 01</div>
       <h2>Probabilità</h2>
@@ -83,34 +95,39 @@ footer{text-align:center;font-size:11px;color:rgba(255,255,255,0.15);padding:32p
       <div class="tags"><span class="tag">Simulatori</span><span class="tag">Combinatorio · Bayes</span></div>
       <span class="arrow">→</span>
     </a>
-    <a class="card c5 soon" href="#">
+
+    <a class="card c5" href="tre_perpendicolari.html">
       <div class="num">Mat 02</div>
-      <h2>Analisi</h2>
-      <p>Derivate, integrali e serie con grafici interattivi.</p>
-      <div class="tags"><span class="tag">Simulatori</span></div>
+      <h2>Tre Perpendicolari</h2>
+      <p>Visualizzatore 3D del teorema e simulatore di piramide triangolare e quadrangolare con altezze delle facce.</p>
+      <div class="tags"><span class="tag">3D interattivo</span><span class="tag">Piramide</span></div>
       <span class="arrow">→</span>
     </a>
+
     <a class="card c6 soon" href="#">
       <div class="num">Mat 03</div>
-      <h2>Geometria Analitica</h2>
-      <p>Coniche, curve parametriche e luoghi geometrici.</p>
+      <h2>Analisi</h2>
+      <p>Derivate, integrali e serie con grafici interattivi: retta tangente, area sotto la curva.</p>
       <div class="tags"><span class="tag">Simulatori</span></div>
       <span class="arrow">→</span>
     </a>
+
     <a class="card c7 soon" href="#">
       <div class="num">Mat 04</div>
-      <h2>Geometria dello Spazio</h2>
-      <p>Solidi, sezioni, aree e volumi. Visualizzazione 3D interattiva.</p>
-      <div class="tags"><span class="tag">3D interattivo</span></div>
+      <h2>Geometria Analitica</h2>
+      <p>Coniche, curve parametriche e luoghi geometrici con visualizzazione interattiva.</p>
+      <div class="tags"><span class="tag">Simulatori</span></div>
       <span class="arrow">→</span>
     </a>
+
     <a class="card c8 soon" href="#">
       <div class="num">Mat 05</div>
       <h2>Numeri Complessi</h2>
-      <p>Piano di Argand, operazioni e trasformazioni conformi.</p>
+      <p>Piano di Argand, operazioni, forme esponenziali e trasformazioni conformi.</p>
       <div class="tags"><span class="tag">Simulatori</span></div>
       <span class="arrow">→</span>
     </a>
+
   </div>
 </div>
 
